@@ -36,5 +36,18 @@
   "notifications": "Notifications",
   "plugs": "Plugs",
   "plug": "Plug",
-  "profile": "Profile"
+  "profile": "Profile",
+  "description": "Description",
+  "errorEmptyField": "This field is required",
+  "editDevice": "Edit Device",
+  "newDevice": "New Device",
+  "newRoom": "New Room",
+  "editRoom": "Edit Room",
+  "newHome": "New Home",
+  "editHome": "Edit Home",
+  "errorMustBeNumber": "This field must be a number"
+
+
+
+
 }
