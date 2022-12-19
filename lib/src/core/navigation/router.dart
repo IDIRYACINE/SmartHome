@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smarthome_algeria/src/features/devices/presentation/edit_device_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/dashboard_view.dart';
 
 import 'routes.dart';
@@ -15,36 +16,11 @@ abstract class AppRouter {
           settings: settings,
           view: const DashboardView(),
         );
-      // case Routes.login.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: LoginView(),
-      //   );
-      // case Routes.profile.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: ProfileView(),
-      //   );
-      // case Routes.settings.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: SettingsView(),
-      //   );
-      // case Routes.room.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: RoomView(),
-      //   );
-      // case Routes.stats.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: StatsView(),
-      //   );
-      // case Routes.device.routeName:
-      //   return getPageRoute(
-      //     settings: settings,
-      //     view: DeviceView(),
-      //   );
+      case deviceEditorRoute:
+        return getPageRoute(
+          settings: settings,
+          view: const DeviceEditorView(),
+        );
       default:
         return getPageRoute(
           settings: settings,

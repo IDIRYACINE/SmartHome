@@ -14,13 +14,17 @@ class DeviceControlPanelView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(crossAxisCount: crossAxisCount, children: [
-      DeviceButton(
-          onPressed: (device) {
-            onPressed?.call(device);
-          },
-          device: Light(
-              powerConsumption: LightPowerConsumption.low.powerConsumption))
-    ]);
+    return GridView.count(
+      scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        crossAxisCount: crossAxisCount,
+        children: [
+          DeviceButton(
+              onPressed: (device) {
+                onPressed?.call(device);
+              },
+              device: Light(
+                  powerConsumption: LightPowerConsumption.low.powerConsumption))
+        ],);
   }
 }

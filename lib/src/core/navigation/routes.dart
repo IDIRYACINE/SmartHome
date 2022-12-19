@@ -9,3 +9,4 @@ const settingsRoute = '/settings';
 const roomRoute = '/room';
 const statsRoute = '/stats';
 const deviceRoute = '/device';
+const deviceEditorRoute = '/deviceEditor';

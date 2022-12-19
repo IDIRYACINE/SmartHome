@@ -18,6 +18,13 @@ abstract class AppNavigator {
     );
   }
 
+  static Future displayDialog(Widget dialog) {
+    return showDialog(
+      context: currentContext,
+      builder: (context) =>   dialog
+    );
+  }
+
   static Future pushNamed(String route, {arguments}) {
     return key.currentState!.pushNamed(route, arguments: arguments);
   }

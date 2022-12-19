@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 
 enum DeviceType {
   light,
@@ -41,3 +40,50 @@ abstract class Device {
   });
 
 }
+
+
+const defaultLightConsumptions = [
+  40,
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+ 
+];
+
+
+const defaultPlugConsumptions = [
+  10,
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+];
+
+const defaultLockConsumptions = [
+  5,
+  10,
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+];
+
+
+// Important to keep the order of the lists as in the DeviceType enum
+const List<List<int>> defaultDeviceConsumptions = [
+  defaultLightConsumptions,
+  defaultPlugConsumptions,
+  defaultLockConsumptions,
+];

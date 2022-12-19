@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/features/home/presentation/create_action_popup.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DashboardAppBar({super.key});
@@ -10,7 +12,9 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBar(
           leading: IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              AppNavigator.displayDialog(const CreateActionPopup());
+            },
           ),
           actions: const [
             ProfileButton(),
