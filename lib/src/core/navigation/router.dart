@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/edit_device_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/dashboard_view.dart';
+import 'package:smarthome_algeria/src/features/home/presentation/home_editor_view.dart';
+import 'package:smarthome_algeria/src/features/room/presentation/room_editor_view.dart';
 
 import 'routes.dart';
 
@@ -20,6 +22,16 @@ abstract class AppRouter {
         return getPageRoute(
           settings: settings,
           view: const DeviceEditorView(),
+        );
+         case homeEditorRoute:
+        return getPageRoute(
+          settings: settings,
+          view:  const HomeEditorView(),
+        );
+         case roomEditorRoute:
+        return getPageRoute(
+          settings: settings,
+          view: const RoomEditorView(),
         );
       default:
         return getPageRoute(

@@ -6,12 +6,18 @@ class CreateActionPopup extends StatelessWidget {
   const CreateActionPopup({Key? key}) : super(key: key);
 
   void onNewHomePressed() {
+    AppNavigator.pop();
+    AppNavigator.pushNamed(homeEditorRoute);
   }
+
   void onNewDevicePressed() {
     AppNavigator.pop();
     AppNavigator.pushNamed(deviceEditorRoute);
   }
+
   void onNewRoomPressed() {
+    AppNavigator.pop();
+    AppNavigator.pushNamed(roomEditorRoute);
   }
 
   @override

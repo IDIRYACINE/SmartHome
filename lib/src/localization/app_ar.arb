@@ -45,6 +45,8 @@
   "editRoom": "Edit Room",
   "newHome": "New Home",
   "editHome": "Edit Home",
-  "errorMustBeNumber": "This field must be a number"
+  "errorMustBeNumber": "This field must be a number",
+  "homeName" : "Home Name",
+  "roomName" : "Room Name"
 
 }
