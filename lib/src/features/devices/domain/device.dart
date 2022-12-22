@@ -26,6 +26,7 @@ abstract class Device {
   String name;
   double powerConsumption;
   IconData icon;
+  bool isOn;
 
   Color color;
   int? id;
@@ -37,6 +38,7 @@ abstract class Device {
     required this.powerConsumption,
     required this.icon,
     required this.color,
+    this.isOn = false, 
   });
 
 }

@@ -14,9 +14,12 @@ class DeviceControlPanelView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
+    final height = MediaQuery.of(context).size.height * 0.2;
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: height),
+      child: GridView.count(
+        scrollDirection: Axis.horizontal,
+        physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: crossAxisCount,
         children: [
           DeviceButton(
@@ -25,6 +28,8 @@ class DeviceControlPanelView extends StatelessWidget {
               },
               device: Light(
                   powerConsumption: LightPowerConsumption.low.powerConsumption))
-        ],);
+        ],
+      ),
+    );
   }
 }
