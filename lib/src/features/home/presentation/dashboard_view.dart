@@ -1,41 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:smarthome_algeria/src/features/devices/presentation/device_panel_view.dart';
-import 'package:smarthome_algeria/src/features/room/domain/room.dart';
-import 'package:smarthome_algeria/src/features/room/presentation/room_preview_widget.dart';
-import 'widgets.dart';
+import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/features/dashboard/presentation/dashboard_view.dart';
+import 'package:smarthome_algeria/src/features/notifications/presentation/notification_view.dart';
+import 'bottom_bar.dart';
+import 'home_app_bar.dart';
 
-class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
-  Room getRoom(int roomIndex) {
-    // TODO : implement this method
-    return Room(name: "name", id: 1, deviceIds: [1, 2, 3, 4]);
-  }
+  final List<Widget> screens = const [
+    DashboardView(),
+    NotificationsView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Expanded(
-            child: DashboardAppBar(),
-          ),
-          Flexible(
-            child: ColoredBox(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: const DeviceControlPanelView()),
-          ),
-          Flexible(
-            flex: 2,
-            child: ListView.builder(
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return RoomPreviewWidget(room: getRoom(index));
-              },
-            ),
-          ),
-        ],
+      appBar: const DashboardAppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ValueListenableBuilder<int>(
+            valueListenable: AppNavigator.bottomBarIndex,
+            builder: (context, index, child) => screens[index]),
       ),
+      bottomNavigationBar: const AppBottomBar(),
     );
   }
 }

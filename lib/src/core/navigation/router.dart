@@ -7,6 +7,8 @@ import 'package:smarthome_algeria/src/features/devices/presentation/edit_device_
 import 'package:smarthome_algeria/src/features/home/presentation/dashboard_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_editor_view.dart';
 import 'package:smarthome_algeria/src/features/room/presentation/room_editor_view.dart';
+import 'package:smarthome_algeria/src/settings/settings_controller.dart';
+import 'package:smarthome_algeria/src/settings/settings_view.dart';
 
 import 'routes.dart';
 
@@ -16,7 +18,7 @@ abstract class AppRouter {
       case dashboardRoute:
         return getPageRoute(
           settings: settings,
-          view: const DashboardView(),
+          view: const HomeView(),
         );
       case deviceEditorRoute:
         return getPageRoute(
@@ -33,10 +35,15 @@ abstract class AppRouter {
           settings: settings,
           view: const RoomEditorView(),
         );
+        case settingsRoute :
+        return getPageRoute(
+          settings: settings,
+          view:  SettingsView(controller: SettingsController.instance,),
+        );
       default:
         return getPageRoute(
           settings: settings,
-          view: const DashboardView(),
+          view: const HomeView(),
         );
     }
   }

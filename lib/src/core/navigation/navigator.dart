@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-
 export 'routes.dart';
 export 'router.dart';
 
@@ -18,8 +17,9 @@ abstract class AppNavigator {
     );
   }
 
-  static Future displayDialog(Widget dialog) {
+  static Future displayDialog(Widget dialog,{Color? barrierColor = Colors.black54}) {
     return showDialog(
+      barrierColor: barrierColor,
       context: currentContext,
       builder: (context) =>   dialog
     );
@@ -48,4 +48,12 @@ abstract class AppNavigator {
   static void pop([result]) {
     if (canPop) return key.currentState!.pop(result);
   }
+
+  static void setBottomBarIndex(int index) {
+    _bottomIndex.value = index;
+  }
+
+  static final ValueNotifier<int> _bottomIndex = ValueNotifier<int>(0);
+  
+  static ValueNotifier<int> get bottomBarIndex => _bottomIndex;
 }

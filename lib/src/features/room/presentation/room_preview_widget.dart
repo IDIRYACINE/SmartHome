@@ -19,7 +19,7 @@ class RoomPreviewWidget extends StatelessWidget {
 
   Device getDevice(int deviceId) {
     // TODO : implement this method
-    return Light(powerConsumption: 70);
+    return Light(powerConsumption: 70, id: 7);
   }
 
   @override
@@ -29,44 +29,47 @@ class RoomPreviewWidget extends StatelessWidget {
     final displayedDevicesCount =
         room.deviceIds.length > maxDevices ? maxDevices : room.deviceIds.length;
 
-    return ConstrainedBox(
-      constraints:  BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.5,
-      ),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              Text(
-                room.name,
-                style: textTheme.displaySmall,
-              ),
-              Text(
-                "${room.deviceIds.length} ${AppLocalizations.of(context)!.devices}",
-                style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
-              ),
-            ]),
-          ),
-          SliverGrid(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 1,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              childCount: displayedDevicesCount,
-              (context, index) {
-                return DevicePreviewCard(
-                  device: getDevice(index),
-                );
-              },
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      SizedBox(
+        width: double.infinity,
+        child: ColoredBox(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Center(
+            child: Text(
+              room.name,
+              style: textTheme.displaySmall,
             ),
           ),
-        ],
+        ),
       ),
-    );
+        SizedBox(
+        width: double.infinity,
+        child: ColoredBox(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Center(
+            child: Text(
+              "${room.deviceIds.length} ${AppLocalizations.of(context)!.devices}",
+              style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: MediaQuery.of(context).size.height * 0.3,
+        width: MediaQuery.of(context).size.width,
+        child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 8,
+              crossAxisCount: 2,
+              childAspectRatio: 4,
+            ),
+            itemCount: displayedDevicesCount,
+            itemBuilder: (context, index) {
+              return DevicePreviewCard(
+                device: getDevice(index),
+              );
+            }),
+      ),
+    ]);
   }
 }

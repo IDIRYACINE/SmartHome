@@ -18,7 +18,7 @@ extension LightPowerConsumptionExtension on LightPowerConsumption {
 }
 
 class Light extends Device {
-  Light({required double powerConsumption, String name = 'Light', Color color = Colors.yellow})
+  Light({required double powerConsumption, String name = 'Light', Color color = Colors.yellow, required int id})
       : super(
             type: DeviceType.light,
             name: name,

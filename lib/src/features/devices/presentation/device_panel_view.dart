@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
 import 'package:smarthome_algeria/src/features/devices/domain/light.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_button.dart';
@@ -27,7 +27,7 @@ class DeviceControlPanelView extends StatelessWidget {
                 onPressed?.call(device);
               },
               device: Light(
-                  powerConsumption: LightPowerConsumption.low.powerConsumption))
+                  powerConsumption: LightPowerConsumption.low.powerConsumption, id: 0))
         ],
       ),
     );

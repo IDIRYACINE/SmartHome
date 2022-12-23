@@ -14,7 +14,7 @@ class DeviceButton<T> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (() => onPressed(device)),
+      onTap: () => onPressed(device),
       child: RoundDeviceLabel(device: device,)
     );
   }
