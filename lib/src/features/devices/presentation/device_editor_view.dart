@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
-
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
+import 'package:smarthome_algeria/src/features/devices/domain/device_editor_controller.dart';
+import 'package:smarthome_algeria/src/features/room/room_feature.dart';
+import 'device_button.dart';
+import 'device_fields.dart';
 import 'device_panel_view.dart';
 
 class DeviceEditorView extends StatefulWidget {
-  const DeviceEditorView({super.key, this.editMode = false});
+  const DeviceEditorView({super.key, required this.editorSettings});
 
-  final bool editMode;
+  
+  final DeviceEditorData editorSettings;
+
   final double bodyPadding = 8;
 
   @override
@@ -16,30 +22,21 @@ class DeviceEditorView extends StatefulWidget {
 }
 
 class _DeviceEditorViewState extends State<DeviceEditorView> {
-  
-  void onDeviceClick(Device device) {}
-
-  void onSave() {}
-
-  void onCancel() {
-    AppNavigator.pop();
-  }
-
-  void onConsumptionChanged(String? newValue) {}
-  void onConsumptionSelected(int? newValue) {}
+  DeviceEditorController? controller;
 
   @override
   Widget build(BuildContext context) {
-    final key = GlobalKey();
 
+    controller ??= DeviceEditorController(BlocProvider.of<RoomBloc>(context), widget.editorSettings);
+    
     return Scaffold(
       appBar: _DeviceEditorAppBar(
-        editMode: widget.editMode,
-        onCancel: onCancel,
-        onSave: onSave,
+        editMode: widget.editorSettings.isEditMode,
+        onCancel: controller!.onCancel,
+        onSave: controller!.onSave,
       ),
       body: Form(
-        key: key,
+        key: controller!.key,
         child: Padding(
           padding: EdgeInsets.all(widget.bodyPadding),
           child: Column(
@@ -47,13 +44,14 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
             children: [
               Text(
                 AppLocalizations.of(context)!.deviceType,
-                style: Theme.of(context).textTheme.displaySmall,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Flexible(
                 child: DeviceControlPanelView(
-                  onPressed: onDeviceClick,
+                  onPressed: controller!.onDeviceClick,
                 ),
               ),
+              Flexible(child: DeviceRoomSelector(onRoomSelected: controller!.selectRoom,)),
               Flexible(
                 child: TextFormField(
                   decoration: InputDecoration(
@@ -63,6 +61,7 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
                     if (value == null || value.isEmpty) {
                       return AppLocalizations.of(context)!.errorEmptyField;
                     }
+                    controller!.deviceName = value;
                     return null;
                   },
                 ),
@@ -77,8 +76,8 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
               Flexible(
                   child: DeviceConsumptionForm(
                 device: DeviceType.light,
-                onConsumptionChanged: onConsumptionChanged,
-                onConsumptionSelected: onConsumptionSelected,
+                onConsumptionChanged: controller!.onConsumptionChanged,
+                onConsumptionSelected: controller!.onConsumptionSelected,
               ))
             ],
           ),
@@ -121,136 +120,4 @@ class _DeviceEditorAppBar extends StatelessWidget
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-typedef OnConsumptionSelected = void Function(int? consumption);
-typedef OnConsumptionChanged = void Function(String consumption);
-
-class DeviceConsumptionForm extends StatefulWidget {
-  const DeviceConsumptionForm(
-      {super.key,
-      required this.device,
-      this.onConsumptionSelected,
-      this.onConsumptionChanged,
-      this.dropdownMode = false,
-      this.consumptions})
-      : assert(
-          onConsumptionChanged != null || onConsumptionSelected != null,
-          'Either onConsumptionChanged or onConsumptionSelected must be provided',
-        );
-
-  final DeviceType device;
-  final OnConsumptionSelected? onConsumptionSelected;
-  final OnConsumptionChanged? onConsumptionChanged;
-  final bool dropdownMode;
-  final List<int>? consumptions;
-
-  @override
-  State<DeviceConsumptionForm> createState() => _DeviceConsumptionFormState();
-}
-
-class _DeviceConsumptionFormState extends State<DeviceConsumptionForm> {
-  bool? dropdownMode;
-
-  final TextEditingController _consumptionController = TextEditingController();
-
-  List<int> _getConsumptions(DeviceType deviceType) {
-    return defaultDeviceConsumptions[deviceType.index];
-  }
-
-  void switchFormMode() {
-    setState(() {
-      dropdownMode = !dropdownMode!;
-    });
-  }
-
-  void consumptionSelectionMenu() {
-    List<int> consumptions =
-        widget.consumptions ?? _getConsumptions(widget.device);
-
-     AppNavigator.displayDialog(_PowerConsumptionSelectionMenu(
-      consumptions: consumptions,
-    )).then((value) {
-      if (value != null) {
-        _consumptionController.text = value.toString();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    dropdownMode ??= widget.dropdownMode;
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              AppLocalizations.of(context)!.powerConsumption,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            IconButton(
-                onPressed: switchFormMode, icon: const Icon(Icons.swap_horiz))
-          ],
-        ),
-        TextFormField(
-          controller: _consumptionController,
-          readOnly: dropdownMode!,
-          onTap: dropdownMode! ? consumptionSelectionMenu : null,
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.powerConsumption,
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return AppLocalizations.of(context)!.errorEmptyField;
-            }
-
-            if (int.tryParse(value) == null) {
-              return AppLocalizations.of(context)!.errorMustBeNumber;
-            }
-
-            return null;
-          },
-          onChanged: widget.onConsumptionChanged,
-        ),
-      ],
-    );
-  }
-}
-
-class _PowerConsumptionSelectionMenu extends StatelessWidget {
-  final List<int> consumptions;
-
-  const _PowerConsumptionSelectionMenu({required this.consumptions});
-
-  void onConsumptionSelected(int consumption) {
-    AppNavigator.pop(consumption);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-
-    return AlertDialog(
-      content: SizedBox(
-        width: mediaQuery.size.width * 0.5,
-        height: mediaQuery.size.height * 0.5,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: consumptions.length,
-            itemBuilder: (context, index) {
-              int consumption = consumptions[index];
-
-              return MaterialButton(
-                minWidth: double.infinity,
-                onPressed: () => onConsumptionSelected(consumptions[index]),
-                child: Text(
-                  '$consumption Kw/h',
-                ),
-              );
-            }),
-      ),
-    );
-  }
 }

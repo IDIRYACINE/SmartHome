@@ -1,15 +1,16 @@
 
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
 
 class RoomEvents {}
 
 
 class AddDevice extends RoomEvents {
-  final Device device;
-  final int index;
+  final DeviceType type;
+  final int consumption;
+  final String name;
 
-  AddDevice(this.device, this.index);
+  AddDevice(this.type, this.consumption, this.name);
 }
 
 class UpdateDevice extends RoomEvents {

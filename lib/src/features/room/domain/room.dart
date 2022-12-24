@@ -1,4 +1,4 @@
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
 class Room {
   String name;

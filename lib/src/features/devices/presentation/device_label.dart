@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
 class DeviceLabel extends StatelessWidget {
   const DeviceLabel({super.key, required this.device});

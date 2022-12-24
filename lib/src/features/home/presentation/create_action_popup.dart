@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
 
 class CreateActionPopup extends StatelessWidget {
   const CreateActionPopup({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class CreateActionPopup extends StatelessWidget {
 
   void onNewDevicePressed() {
     AppNavigator.pop();
-    AppNavigator.pushNamed(deviceEditorRoute);
+    AppNavigator.pushNamed(deviceEditorRoute, arguments: DeviceEditorData());
   }
 
   void onNewRoomPressed() {

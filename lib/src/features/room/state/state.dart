@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
 class RoomState extends Equatable {
   final List<Device> lightDevices;

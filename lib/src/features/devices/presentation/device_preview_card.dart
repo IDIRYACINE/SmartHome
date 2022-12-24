@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
-import '../domain/type_aliases.dart';
+import '../data/type_aliases.dart';
 
 class DevicePreviewCard extends StatefulWidget {
-  const DevicePreviewCard({super.key, required this.device, this.onTap});
+  const DevicePreviewCard({super.key, required this.device, this.onTap, required this.onLongPress, required this.index});
 
   final Device device;
-  final DeviceCallback? onTap;
+  final int index;
+  final DeviceTap? onTap;
+  final DeviceLongPress onLongPress;
+
 
   @override
   State<StatefulWidget> createState() => _DevicePreviewCardState();
@@ -23,6 +26,7 @@ class _DevicePreviewCardState extends State<DevicePreviewCard> {
     Color tileColor = isOn! ? widget.device.color : Colors.grey;
 
     return GestureDetector(
+      onLongPress: () => widget.onLongPress(widget.device,widget.index),
       onTap: () {
         setState(() {
           isOn = !isOn!;

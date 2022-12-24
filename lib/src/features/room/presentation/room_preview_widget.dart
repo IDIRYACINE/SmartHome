@@ -1,7 +1,10 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
+import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
+import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_preview_card.dart';
 import 'package:smarthome_algeria/src/features/room/domain/type_aliases.dart';
 import '../domain/room.dart';
@@ -22,17 +25,25 @@ class RoomPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayedDevicesCount =
-        room.devices.length > maxDevices ? maxDevices : room.devices.length;
+    //  TODO fix this
+    // final displayedDevicesCount =
+    //     room.devices.length > maxDevices ? maxDevices : room.devices.length;
 
-    return displayedDevicesCount == 0
-        ? _NormalPreviewView(
-            roomDevicesCount: room.devices.length,
-            roomName: room.name,
-            displayedDevicesCount: displayedDevicesCount,
-            getDevice: getDevice,
-          )
-        : const _EmptyPreviewView();
+    // return displayedDevicesCount == 0
+    //     ? _NormalPreviewView(
+    //         roomDevicesCount: room.devices.length,
+    //         roomName: room.name,
+    //         displayedDevicesCount: displayedDevicesCount,
+    //         getDevice: getDevice,
+    //       )
+    //     : const _EmptyPreviewView();
+
+    return _NormalPreviewView(
+      roomDevicesCount: 4,
+      roomName: "Test",
+      displayedDevicesCount: 4,
+      getDevice: (index) => Light(powerConsumption: 44, id: 55),
+    );
   }
 }
 
@@ -47,6 +58,17 @@ class _NormalPreviewView extends StatelessWidget {
   final String roomName;
   final int roomDevicesCount;
   final FetchDevice getDevice;
+
+  void onDeviceLongPress(Device device, int index) {
+
+    DeviceEditorData data = DeviceEditorData(
+      device: device,
+      index: index,
+      isEditMode: true,
+    );
+
+    AppNavigator.pushNamed(deviceEditorRoute,arguments: data);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +112,8 @@ class _NormalPreviewView extends StatelessWidget {
             itemBuilder: (context, index) {
               return DevicePreviewCard(
                 device: getDevice(index),
+                onLongPress: onDeviceLongPress,
+                index: index,
               );
             }),
       ),
@@ -103,7 +127,7 @@ class _EmptyPreviewView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children:  [
+      children: [
         const SizedBox(
           height: 8,
         ),

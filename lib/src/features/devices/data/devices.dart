@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smarthome_algeria/src/features/devices/data/light.dart';
 
 enum DeviceType {
   light,
@@ -24,7 +25,7 @@ extension DeviceTypeExtension on DeviceType {
 abstract class Device {
   DeviceType type;
   String name;
-  double powerConsumption;
+  int powerConsumption;
   IconData icon;
   bool isOn;
 
@@ -40,6 +41,10 @@ abstract class Device {
     required this.color,
     this.isOn = false, 
   });
+
+  static Device build(DeviceType type, int consumption,int id, String name) {
+    return Light(powerConsumption: consumption, id: id);
+  }
 
 }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_editor_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_editor_view.dart';
@@ -13,6 +14,7 @@ import 'package:smarthome_algeria/src/settings/settings_view.dart';
 import 'routes.dart';
 
 abstract class AppRouter {
+
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case dashboardRoute:
@@ -23,7 +25,7 @@ abstract class AppRouter {
       case deviceEditorRoute:
         return getPageRoute(
           settings: settings,
-          view: const DeviceEditorView(),
+          view:  DeviceEditorView(editorSettings :settings.arguments as DeviceEditorData),
         );
          case homeEditorRoute:
         return getPageRoute(
