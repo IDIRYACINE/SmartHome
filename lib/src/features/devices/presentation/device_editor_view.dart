@@ -16,7 +16,9 @@ class DeviceEditorView extends StatefulWidget {
 }
 
 class _DeviceEditorViewState extends State<DeviceEditorView> {
+  
   void onDeviceClick(Device device) {}
+
   void onSave() {}
 
   void onCancel() {

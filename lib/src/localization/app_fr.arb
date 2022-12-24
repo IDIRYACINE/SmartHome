@@ -47,7 +47,8 @@
   "editHome": "Edit Home",
   "errorMustBeNumber": "This field must be a number",
   "homeName" : "Home Name",
-  "roomName" : "Room Name"
-
-
+  "roomName" : "Room Name",
+  "noDevices": "No devices",
+  "noRooms": "No rooms",
+  "noHomes": "No homes"
 }

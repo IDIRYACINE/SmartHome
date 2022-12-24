@@ -2,9 +2,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/light.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_preview_card.dart';
-
+import 'package:smarthome_algeria/src/features/room/domain/type_aliases.dart';
 import '../domain/room.dart';
 
 class RoomPreviewWidget extends StatelessWidget {
@@ -18,16 +17,40 @@ class RoomPreviewWidget extends StatelessWidget {
   final int maxDevices;
 
   Device getDevice(int deviceId) {
-    // TODO : implement this method
-    return Light(powerConsumption: 70, id: 7);
+    return room.devices.firstWhere((device) => device.id == deviceId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     final displayedDevicesCount =
-        room.deviceIds.length > maxDevices ? maxDevices : room.deviceIds.length;
+        room.devices.length > maxDevices ? maxDevices : room.devices.length;
+
+    return displayedDevicesCount == 0
+        ? _NormalPreviewView(
+            roomDevicesCount: room.devices.length,
+            roomName: room.name,
+            displayedDevicesCount: displayedDevicesCount,
+            getDevice: getDevice,
+          )
+        : const _EmptyPreviewView();
+  }
+}
+
+class _NormalPreviewView extends StatelessWidget {
+  const _NormalPreviewView(
+      {required this.displayedDevicesCount,
+      required this.roomName,
+      required this.roomDevicesCount,
+      required this.getDevice});
+
+  final int displayedDevicesCount;
+  final String roomName;
+  final int roomDevicesCount;
+  final FetchDevice getDevice;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SizedBox(
@@ -36,19 +59,19 @@ class RoomPreviewWidget extends StatelessWidget {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Center(
             child: Text(
-              room.name,
+              roomName,
               style: textTheme.displaySmall,
             ),
           ),
         ),
       ),
-        SizedBox(
+      SizedBox(
         width: double.infinity,
         child: ColoredBox(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Center(
             child: Text(
-              "${room.deviceIds.length} ${AppLocalizations.of(context)!.devices}",
+              "$roomDevicesCount ${AppLocalizations.of(context)!.devices}",
               style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
             ),
           ),
@@ -71,5 +94,21 @@ class RoomPreviewWidget extends StatelessWidget {
             }),
       ),
     ]);
+  }
+}
+
+class _EmptyPreviewView extends StatelessWidget {
+  const _EmptyPreviewView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children:  [
+        const SizedBox(
+          height: 8,
+        ),
+        Text(AppLocalizations.of(context)!.noDevices),
+      ],
+    );
   }
 }

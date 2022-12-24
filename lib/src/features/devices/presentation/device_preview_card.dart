@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/features/devices/domain/device.dart';
 
-typedef DeviceCallback = void Function(Device device);
+import '../domain/type_aliases.dart';
 
 class DevicePreviewCard extends StatefulWidget {
   const DevicePreviewCard({super.key, required this.device, this.onTap});
