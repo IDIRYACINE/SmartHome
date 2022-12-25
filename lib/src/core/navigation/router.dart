@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
+import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
+import 'package:smarthome_algeria/src/features/devices/presentation/device_archetype_view.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_editor_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_editor_view.dart';
@@ -42,6 +44,12 @@ abstract class AppRouter {
           settings: settings,
           view:  SettingsView(controller: SettingsController.instance,),
         );
+        case deviceArchetypeRoute:
+        return getPageRoute(
+          settings: settings,
+          view:  DeviceArchetypeView(deviceArchetype :settings.arguments as DeviceArchetype),
+        );
+        
       default:
         return getPageRoute(
           settings: settings,

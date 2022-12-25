@@ -22,8 +22,9 @@ class _DevicePreviewCardState extends State<DevicePreviewCard> {
   @override
   Widget build(BuildContext context) {
     isOn ??= widget.device.isOn;
+    final theme = Theme.of(context);
 
-    Color tileColor = isOn! ? widget.device.color : Colors.grey;
+    Color tileColor = isOn! ? theme.colorScheme.primaryContainer : theme.unselectedWidgetColor;
 
     return GestureDetector(
       onLongPress: () => widget.onLongPress(widget.device,widget.index),
@@ -41,7 +42,6 @@ class _DevicePreviewCardState extends State<DevicePreviewCard> {
           ),
           leading: Icon(
             widget.device.icon,
-            color: Colors.black,
           ),
           title: Text(widget.device.name),
         ),

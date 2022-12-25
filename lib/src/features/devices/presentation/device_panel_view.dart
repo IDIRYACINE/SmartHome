@@ -1,34 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
-import 'package:smarthome_algeria/src/features/devices/data/light.dart';
+import 'package:smarthome_algeria/src/features/devices/data/type_aliases.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_button.dart';
 
 typedef DeviceClickCallback = void Function(Device data);
 
 class DeviceControlPanelView extends StatelessWidget {
-  const DeviceControlPanelView({super.key, this.padding = 4, this.onPressed});
-
-  final double padding;
-  final int crossAxisCount = 3;
+  final double padding = 8;
   final DeviceClickCallback? onPressed;
+
+  const DeviceControlPanelView({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 0.2;
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: height),
-      child: GridView.count(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: crossAxisCount,
-        children: [
-          DeviceButton(
-              onPressed: (device) {
-                onPressed?.call(device);
-              },
-              device: Light(
-                  powerConsumption: LightPowerConsumption.low.powerConsumption, id: 0))
-        ],
+        itemCount: deviceArchetypes.length,
+        itemBuilder: (context, index) => DeviceSummaryCard(
+          deviceArchetype: deviceArchetypes[index],
+        ),
+      ),
+    );
+  }
+}
+
+class DeviceTypePanelView extends StatefulWidget {
+  const DeviceTypePanelView({super.key, this.padding = 4, required this.onPressed});
+
+  final double padding;
+  final DeviceTypePressed onPressed;
+
+  @override
+  State<DeviceTypePanelView> createState() => _DeviceTypePanelViewState();
+}
+
+class _DeviceTypePanelViewState extends State<DeviceTypePanelView> {
+
+  VoidCallback? turnOffLastSelected;
+
+  void registerLastSelectedCallback(VoidCallback callback){
+    if(turnOffLastSelected != callback){
+      turnOffLastSelected?.call();
+      turnOffLastSelected = callback;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height * 0.2;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: height),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: deviceArchetypes.length,
+        itemBuilder: (context, index) => DeviceTypeCard(
+          deviceArchetype: deviceArchetypes[index],
+          index: index,
+          onPressed: widget.onPressed,
+          registerTurnOffCallback: registerLastSelectedCallback,
+        ),
       ),
     );
   }

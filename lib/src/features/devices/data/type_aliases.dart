@@ -1,3 +1,4 @@
+import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 
 import 'devices.dart';
@@ -9,3 +10,7 @@ typedef RoomClickCallback = void Function(Room data);
 
 typedef OnConsumptionSelected = void Function(int? consumption);
 typedef OnConsumptionChanged = void Function(String consumption);
+
+typedef DeviceTypePressed = void Function(int index,DeviceArchetype archetype);
+typedef DeviceTypeOffCallback = void Function(void Function());
+  

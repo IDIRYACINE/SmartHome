@@ -40,6 +40,7 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
         child: Padding(
           padding: EdgeInsets.all(widget.bodyPadding),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
@@ -47,7 +48,7 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Flexible(
-                child: DeviceControlPanelView(
+                child: DeviceTypePanelView(
                   onPressed: controller!.onDeviceClick,
                 ),
               ),

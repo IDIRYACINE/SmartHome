@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
@@ -61,39 +60,29 @@ class _DeviceConsumptionFormState extends State<DeviceConsumptionForm> {
   Widget build(BuildContext context) {
     dropdownMode ??= widget.dropdownMode;
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              AppLocalizations.of(context)!.powerConsumption,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            IconButton(
-                onPressed: switchFormMode, icon: const Icon(Icons.swap_horiz))
-          ],
+    return TextFormField(
+      controller: _consumptionController,
+      readOnly: dropdownMode!,
+      onTap: dropdownMode! ? consumptionSelectionMenu : null,
+      decoration: InputDecoration(
+        labelText: AppLocalizations.of(context)!.powerConsumption,
+        suffixIcon: IconButton(
+          onPressed: switchFormMode,
+          icon: const Icon(Icons.swap_horiz),
         ),
-        TextFormField(
-          controller: _consumptionController,
-          readOnly: dropdownMode!,
-          onTap: dropdownMode! ? consumptionSelectionMenu : null,
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.powerConsumption,
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return AppLocalizations.of(context)!.errorEmptyField;
-            }
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return AppLocalizations.of(context)!.errorEmptyField;
+        }
 
-            if (int.tryParse(value) == null) {
-              return AppLocalizations.of(context)!.errorMustBeNumber;
-            }
+        if (int.tryParse(value) == null) {
+          return AppLocalizations.of(context)!.errorMustBeNumber;
+        }
 
-            return null;
-          },
-          onChanged: widget.onConsumptionChanged,
-        ),
-      ],
+        return null;
+      },
+      onChanged: widget.onConsumptionChanged,
     );
   }
 }
@@ -114,7 +103,6 @@ class _PowerConsumptionSelectionMenu extends StatelessWidget {
     return AlertDialog(
       content: SizedBox(
         width: mediaQuery.size.width * 0.5,
-        height: mediaQuery.size.height * 0.5,
         child: ListView.builder(
             shrinkWrap: true,
             itemCount: consumptions.length,

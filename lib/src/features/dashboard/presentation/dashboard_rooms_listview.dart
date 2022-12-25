@@ -12,27 +12,24 @@ class RoomListView extends StatefulWidget {
 }
 
 class _RoomListViewState extends State<RoomListView> {
-  late List<Room> rooms;
-
-  Room getRoom(int roomIndex) {
-    return rooms[roomIndex];
-  }
-
   @override
   Widget build(BuildContext context) {
-    rooms = BlocProvider.of<HomeBloc>(context, listen: true).state.getRooms();
-    
-    return rooms.isNotEmpty
-        ? ListView.builder(
-            itemCount: rooms.length,
-            itemBuilder: (context, index) {
-              return RoomPreviewWidget(
-                room: getRoom(index),
-              );
-            },
-          )
-        : Center(
-            child: Text(AppLocalizations.of(context)!.noRooms),
-          );
+    return BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.rooms.length != current.rooms.length,
+        builder: (context, state) {
+          return state.rooms.isNotEmpty
+              ? ListView.builder(
+                  itemCount: state.rooms.length,
+                  itemBuilder: (context, index) {
+                    return RoomPreviewWidget(
+                      room: state.rooms[index],
+                    );
+                  },
+                )
+              : Center(
+                  child: Text(AppLocalizations.of(context)!.noRooms),
+                );
+        });
   }
 }

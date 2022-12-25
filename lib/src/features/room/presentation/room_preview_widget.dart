@@ -25,7 +25,6 @@ class RoomPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  TODO fix this
     // final displayedDevicesCount =
     //     room.devices.length > maxDevices ? maxDevices : room.devices.length;
 
@@ -60,64 +59,53 @@ class _NormalPreviewView extends StatelessWidget {
   final FetchDevice getDevice;
 
   void onDeviceLongPress(Device device, int index) {
-
     DeviceEditorData data = DeviceEditorData(
       device: device,
       index: index,
       isEditMode: true,
     );
 
-    AppNavigator.pushNamed(deviceEditorRoute,arguments: data);
+    AppNavigator.pushNamed(deviceEditorRoute, arguments: data);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      SizedBox(
-        width: double.infinity,
-        child: ColoredBox(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Center(
-            child: Text(
-              roomName,
-              style: textTheme.displaySmall,
-            ),
+    return ColoredBox(
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            roomName,
+            style: textTheme.displaySmall,
           ),
-        ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        child: ColoredBox(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Center(
-            child: Text(
-              "$roomDevicesCount ${AppLocalizations.of(context)!.devices}",
-              style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
-            ),
+          Text(
+            "$roomDevicesCount ${AppLocalizations.of(context)!.devices}",
+            style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
           ),
-        ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 8,
+                  crossAxisCount: 2,
+                  childAspectRatio: 3,
+                ),
+                itemCount: displayedDevicesCount,
+                itemBuilder: (context, index) {
+                  return DevicePreviewCard(
+                    device: getDevice(index),
+                    onLongPress: onDeviceLongPress,
+                    index: index,
+                  );
+                }),
+          ),
+        ],
       ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.3,
-        width: MediaQuery.of(context).size.width,
-        child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 8,
-              crossAxisCount: 2,
-              childAspectRatio: 4,
-            ),
-            itemCount: displayedDevicesCount,
-            itemBuilder: (context, index) {
-              return DevicePreviewCard(
-                device: getDevice(index),
-                onLongPress: onDeviceLongPress,
-                index: index,
-              );
-            }),
-      ),
-    ]);
+    );
   }
 }
 

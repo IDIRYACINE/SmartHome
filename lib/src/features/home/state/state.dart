@@ -5,35 +5,36 @@ import '../domain/home.dart';
 
 class HomeState extends Equatable {
   final List<Home> homes;
-  final Home? currentHome;
+  final int currentHomeIndex ;
 
-  const HomeState({required this.homes, this.currentHome});
+  const HomeState({required this.homes, this.currentHomeIndex = 0});
 
   static HomeState initialState({List<Home>? homes, Home? currentHome}) {
     homes ??= [];
 
-    if (homes.isNotEmpty) {
-      currentHome ??= homes.first;
-    }
 
-    return HomeState(homes: homes, currentHome: currentHome);
+    return HomeState(homes: homes, currentHomeIndex: 0);
   }
   
   @override
-  List<Object?> get props => [homes,currentHome];
+  List<Object?> get props => [homes,currentHomeIndex];
 
-  HomeState copyWith({List<Home>? homes, Home? currentHome}) {
+  HomeState copyWith({List<Home>? homes, int? currentHomeIndex}) {
     return HomeState(
       homes: homes ?? this.homes,
-      currentHome: currentHome ?? this.currentHome,
+      currentHomeIndex: currentHomeIndex ?? this.currentHomeIndex,
     );
   }
 
-  List<Room> getRooms() {
-    if(currentHome == null){
-      return [];
-    }
-    return currentHome!.rooms ;
+  List<Room> get rooms {
+    return currentHome?.rooms ?? [] ;
   }
+
+  Home? get currentHome {
+    if(currentHomeIndex >= homes.length){
+      return null;
+    }
+   return homes[currentHomeIndex];
+  } 
 
 }

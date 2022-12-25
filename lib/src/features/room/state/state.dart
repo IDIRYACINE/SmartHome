@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 
 class RoomState extends Equatable {
@@ -47,6 +48,14 @@ class RoomState extends Equatable {
       case DeviceType.lock:
         return copyWith(lockDevices: devices);
     }
+  }
+
+  int getDeviceArchetypeCount(DeviceType type) {
+    return 0 ;
+  }
+
+  List<Device> getArchetypeDeviceList(DeviceArchetype deviceArchetype) {
+    return [];
   }
   
 }

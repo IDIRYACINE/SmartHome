@@ -26,7 +26,7 @@ class HomeBloc extends Bloc<HomeEvents, HomeState> {
     updatedHomes.add(home);
 
     if (index == 0) {
-      emit(state.copyWith(homes: updatedHomes, currentHome: home));
+      emit(state.copyWith(homes: updatedHomes, currentHomeIndex: index));
       return;
     }
     emit(state.copyWith(homes: updatedHomes));
@@ -45,13 +45,13 @@ class HomeBloc extends Bloc<HomeEvents, HomeState> {
   }
 
   void _selectHome(SelectHome event, Emitter<HomeState> emit) {
-    emit(HomeState(homes: state.homes, currentHome: event.home));
+    emit(HomeState(homes: state.homes, currentHomeIndex: event.home.index));
   }
 
   void _addRoom(AddRoom event, Emitter<HomeState> emit) {
-    final List<Room> updatedRooms = List.from(state.getRooms());
+    final List<Room> updatedRooms = List.from(state.rooms);
 
-    int index = state.getRooms().length;
+    int index = state.rooms.length;
     Room room = Room(id: index, name: event.roomName, devices: []);
 
     updatedRooms.add(room);
@@ -66,7 +66,7 @@ class HomeBloc extends Bloc<HomeEvents, HomeState> {
   }
 
   void _updateRoom(UpdateRoom event, Emitter<HomeState> emit) {
-    final List<Room> updatedRooms = List.from(state.getRooms());
+    final List<Room> updatedRooms = List.from(state.rooms);
 
     updatedRooms[event.index] = event.room;
 
@@ -80,7 +80,7 @@ class HomeBloc extends Bloc<HomeEvents, HomeState> {
   }
 
   void _removeRoom(RemoveRoom event, Emitter<HomeState> emit) {
-    final List<Room> updatedRooms = List.from(state.getRooms());
+    final List<Room> updatedRooms = List.from(state.rooms);
 
     updatedRooms.remove(event.room);
 

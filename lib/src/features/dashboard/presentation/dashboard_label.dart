@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/features/home/domain/home.dart';
-import 'package:smarthome_algeria/src/features/home/state/bloc.dart';
-
+import 'package:smarthome_algeria/src/features/home/home_feature.dart';
 import '../domain/type_aliases.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeLabel extends StatelessWidget {
   const HomeLabel({
@@ -31,8 +30,7 @@ class HomeLabel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            currentHome!.name,
-            style: Theme.of(context).textTheme.headline6,
+            currentHome?.name ?? AppLocalizations.of(context)!.noHomes,
           ),
           const Icon(Icons.arrow_drop_down)
         ],
@@ -55,14 +53,16 @@ class _SelectHomePopup extends StatelessWidget {
       onTap: () => onHomeSelected(home),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            home.name,
-            style: Theme.of(context).textTheme.bodyLarge,
+          child: Center(
+            child: Text(
+              home.name,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
           ),
         ),
       ),

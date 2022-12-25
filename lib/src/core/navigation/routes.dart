@@ -12,3 +12,4 @@ const deviceRoute = '/device';
 const deviceEditorRoute = '/deviceEditor';
 const homeEditorRoute = '/homeEditor';
 const roomEditorRoute = '/roomEditor';
+const deviceArchetypeRoute = '/deviceArchetype';

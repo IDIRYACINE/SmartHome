@@ -16,7 +16,7 @@ class DeviceEditorController {
 
   DeviceEditorController(this.roomBloc, this.editorSettings);
 
-  void onDeviceClick(Device device) {
+  void onDeviceClick(int index, DeviceArchetype device) {
     deviceType = device.type;
   }
 

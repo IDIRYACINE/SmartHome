@@ -38,7 +38,7 @@ class _ScaffoldRoomsSelectorViewState extends State<ScaffoldRoomsSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<HomeBloc>(context).state.getRooms();
+    rooms ??= BlocProvider.of<HomeBloc>(context).state.rooms;
 
     return Scaffold(
       appBar: _AppBar(
@@ -156,7 +156,7 @@ class _PopupRoomsSelectorViewState extends State<PopupRoomsSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<HomeBloc>(context).state.getRooms();
+    rooms ??= BlocProvider.of<HomeBloc>(context).state.rooms;
 
     return AlertDialog(
       content: ListView.separated(

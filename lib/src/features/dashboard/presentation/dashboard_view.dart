@@ -5,7 +5,6 @@ import 'package:smarthome_algeria/src/features/dashboard/presentation/dashboard_
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:smarthome_algeria/src/features/home/home_feature.dart';
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
-import 'dashboard_label.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardView extends StatelessWidget {
@@ -16,27 +15,11 @@ class DashboardView extends StatelessWidget {
         barrierColor: Colors.grey.withOpacity(0.75));
   }
 
-  void onHomeSelected(Home home, BuildContext context) {
-    BlocProvider.of<HomeBloc>(context).add(SelectHome(home));
-    AppNavigator.pop();
-  }
 
   Widget buildDashboardBody(BuildContext context) {
     return Column(
       children: [
-        Flexible(
-          child: ColoredBox(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: BlocSelector<HomeBloc, HomeState, Home>(
-              selector: (state) => state.currentHome!,
-              builder: (context, home) => HomeLabel(
-                onHomeSelected: (home) => onHomeSelected(home, context),
-                currentHome: home,
-              ),
-            ),
-          ),
-        ),
-        Flexible(
+        Expanded(
           child: ColoredBox(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: DeviceControlPanelView(
@@ -44,7 +27,7 @@ class DashboardView extends StatelessWidget {
             ),
           ),
         ),
-        const Flexible(flex: 2, child: RoomListView()),
+        const Flexible(flex: 3, child: RoomListView()),
       ],
     );
   }
