@@ -1,5 +1,7 @@
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/features/room/domain/room.dart';
 import 'package:smarthome_algeria/src/features/room/state/events.dart';
 import 'package:smarthome_algeria/src/features/room/state/state.dart';
 
@@ -9,35 +11,62 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     on<AddDevice>(_addDevice);
     on<UpdateDevice>(_updateDevice);
     on<RemoveDevice>(_removeDevice);
+    on<SelectCurrentHome>(_selectCurrentHome);
   }
 
   void _addDevice(AddDevice event, Emitter<RoomState> emit) {
-    final List<Device> source = state.getDeviceList(event.type);
-    final List<Device> updatedDevices = List.from(source);
 
-    int index = updatedDevices.length;
-    Device device =
-        Device.build(event.type, event.consumption, index, event.name);
+    final List<RoomGroup> updatedGroups = List.from(state.roomGroups);
+    final RoomGroup sourceGroup = updatedGroups[state.roomGroup!.homeId];
+    final Room sourceRoom = sourceGroup.rooms[event.roomIndex];
 
-    updatedDevices.add(device);
+    int deviceId = sourceRoom.devices.length;
 
-    emit(state.copyWithDeviceType(event.type, updatedDevices));
+    final Device device = Device(
+        id: deviceId,
+        name: event.name,
+        powerConsumption: event.consumption,
+        type: event.type,
+        icon: devicesIcons[event.type.index]);
+
+    sourceRoom.devices.add(device);
+    sourceRoom.getDeviceList(event.type).add(device);
+
+    emit(state.copyWith(roomGroups: updatedGroups));
   }
 
   void _updateDevice(UpdateDevice event, Emitter<RoomState> emit) {
-    final List<Device> source = state.getDeviceList(event.device.type);
-    final List<Device> updatedDevices = List.from(source);
+    int roomGroupIndex = state.roomGroups.indexOf(state.roomGroup!);
+    final List<RoomGroup> updatedGroups = List.from(state.roomGroups);
 
-    updatedDevices[event.index] = event.device;
-    emit(state.copyWithDeviceType(event.device.type, updatedDevices));
+    final RoomGroup sourceGroup = updatedGroups[roomGroupIndex];
+    final Room sourceRoom = sourceGroup.rooms[event.roomIndex];
+
+    sourceRoom.devices[event.index] = event.device;
+
+    List<Device> deviceTypeList = sourceRoom.getDeviceList(event.device.type);
+    int deviceTypeIndex = deviceTypeList.indexOf(event.device);
+    deviceTypeList[deviceTypeIndex] = event.device;
+
+    emit(state.copyWith(roomGroups: updatedGroups));
   }
 
   void _removeDevice(RemoveDevice event, Emitter<RoomState> emit) {
-    final List<Device> source = state.getDeviceList(event.device.type);
-    final List<Device> updatedDevices = List.from(source);
+    int roomGroupIndex = state.roomGroups.indexOf(state.roomGroup!);
+    final List<RoomGroup> updatedGroups = List.from(state.roomGroups);
 
-    updatedDevices.remove(event.device);
+    final RoomGroup sourceGroup = updatedGroups[roomGroupIndex];
+    final Room sourceRoom = sourceGroup.rooms[event.roomIndex];
 
-    emit(state.copyWithDeviceType(event.device.type, updatedDevices));
+    List<Device> deviceTypeList = sourceRoom.getDeviceList(event.device.type);
+
+    sourceRoom.devices.remove(event.device);
+    deviceTypeList.remove(event.device);
+
+    emit(state.copyWith(roomGroups: updatedGroups));
+  }
+
+  void _selectCurrentHome(SelectCurrentHome event, Emitter<RoomState> emit) {
+    emit(state.copyWith(currentHomeId: event.homeId));
   }
 }

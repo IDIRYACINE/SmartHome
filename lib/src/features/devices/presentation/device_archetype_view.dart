@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
-import 'package:smarthome_algeria/src/features/room/room_feature.dart';
+import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 
 class DeviceArchetypeView extends StatelessWidget {
   const DeviceArchetypeView({super.key, required this.deviceArchetype});
@@ -11,7 +11,7 @@ class DeviceArchetypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final devices = BlocProvider.of<RoomBloc>(context)
+    final devices = BlocProvider.of<AppBloc>(context)
         .state
         .getArchetypeDeviceList(deviceArchetype);
 
@@ -24,15 +24,23 @@ class DeviceArchetypeView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(deviceArchetype.name , style:Theme.of(context).textTheme.displaySmall),
-
+            Text(deviceArchetype.name,
+                style: Theme.of(context).textTheme.displaySmall),
+            const SizedBox(
+              height: 5,
+            ),
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: devices.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(devices[index].name),
-                    subtitle: Text(devices[index].id.toString()),
+                  return DevicePreviewCard(
+                      device: devices[index],
+                      onLongPress: (device, key) => {},
+                      index: index);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(
+                    height: 5,
                   );
                 },
               ),
@@ -43,4 +51,3 @@ class DeviceArchetypeView extends StatelessWidget {
     );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
 import 'package:smarthome_algeria/src/features/room/domain/room.dart';
 
 import '../domain/home.dart';
@@ -35,6 +36,8 @@ class HomeState extends Equatable {
       return null;
     }
    return homes[currentHomeIndex];
-  } 
+  }
+
+  getArchetypeDeviceList(DeviceArchetype deviceArchetype) {} 
 
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'settings_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -9,15 +10,13 @@ import 'settings_controller.dart';
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key, required this.controller});
 
-  static const routeName = '/settings';
-
   final SettingsController controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settings),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -25,27 +24,77 @@ class SettingsView extends StatelessWidget {
         //
         // When a user selects a theme from the dropdown list, the
         // SettingsController is updated, which rebuilds the MaterialApp.
-        child: DropdownButton<ThemeMode>(
+        child: Column(children: [
+          _ThemeSetting(controller: controller),
+          _LanguageSetting(controller: controller),
+        ]),
+      ),
+    );
+  }
+}
+
+class _ThemeSetting extends StatelessWidget {
+  final SettingsController controller;
+
+  const _ThemeSetting({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(AppLocalizations.of(context)!.theme),
+        DropdownButton<ThemeMode>(
           // Read the selected themeMode from the controller
           value: controller.themeMode,
           // Call the updateThemeMode method any time the user selects a theme.
           onChanged: controller.updateThemeMode,
-          items: const [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text('System Theme'),
-            ),
+          items: [
             DropdownMenuItem(
               value: ThemeMode.light,
-              child: Text('Light Theme'),
+              child: Text(AppLocalizations.of(context)!.lightTheme),
             ),
             DropdownMenuItem(
               value: ThemeMode.dark,
-              child: Text('Dark Theme'),
+              child: Text(AppLocalizations.of(context)!.darkTheme),
             )
           ],
-        ),
-      ),
+        )
+      ],
+    );
+  }
+}
+
+class _LanguageSetting extends StatelessWidget {
+  final SettingsController controller;
+
+  const _LanguageSetting({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(AppLocalizations.of(context)!.language),
+        DropdownButton<LanguageMode>(
+          value: controller.languageMode,
+          onChanged: (language) => controller.updateLanguageMode(language),
+          items: [
+            DropdownMenuItem(
+              value: LanguageMode.english,
+              child: Text(AppLocalizations.of(context)!.english),
+            ),
+            DropdownMenuItem(
+              value: LanguageMode.french,
+              child: Text(AppLocalizations.of(context)!.french),
+            ),
+            DropdownMenuItem(
+              value: LanguageMode.arabic,
+              child: Text(AppLocalizations.of(context)!.arabic),
+            )
+          ],
+        )
+      ],
     );
   }
 }

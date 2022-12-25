@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 
-import 'features/home/home_feature.dart';
-import 'features/room/room_feature.dart';
 import 'settings/settings_controller.dart';
 
 class MyApp extends StatelessWidget {
@@ -23,14 +22,12 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<HomeBloc>(
-              create: (context) => HomeBloc(),
-            ),
-            BlocProvider<RoomBloc>(
-              create: (context) => RoomBloc(),
+            BlocProvider<AppBloc>(
+              create: (context) => AppBloc(),
             ),
           ],
           child: MaterialApp(
+            locale: settingsController.locale,
             restorationScopeId: 'app',
             localizationsDelegates: const [
               AppLocalizations.delegate,
@@ -40,6 +37,8 @@ class MyApp extends StatelessWidget {
             ],
             supportedLocales: const [
               Locale('en', ''),
+              Locale('fr', ''),
+              Locale('ar', '')
             ],
             navigatorKey: AppNavigator.key,
             onGenerateTitle: (BuildContext context) =>

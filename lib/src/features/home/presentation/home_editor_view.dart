@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/features/home/home_feature.dart';
+import 'package:smarthome_algeria/src/core/state_manager/app_bloc.dart';
 
 class HomeEditorView extends StatefulWidget {
   const HomeEditorView({super.key, this.editMode = false});
@@ -20,7 +20,7 @@ class _HomeEditorViewState extends State<HomeEditorView> {
 
   void onSave() {
     if (formKey.currentState!.validate()) {
-      BlocProvider.of<HomeBloc>(context).add(AddHome(homeName));
+      BlocProvider.of<AppBloc>(context).add(AddHome(homeName));
       AppNavigator.pop();
     }
   }

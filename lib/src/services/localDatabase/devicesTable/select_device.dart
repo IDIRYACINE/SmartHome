@@ -39,7 +39,7 @@ class SelectDevice extends TaskDelegate<List<Device>, SelectDeviceData> {
   }
 
   List<Device> _selectDevice() {
-    final device = _messageData.data as SelectDeviceData;
+    // final device = _messageData.data as SelectDeviceData;
 
     final stmt = _db.prepare('''
       SELECT * FROM ${app.DatabaseTables.devices.name}
@@ -47,7 +47,7 @@ class SelectDevice extends TaskDelegate<List<Device>, SelectDeviceData> {
       AND ${DevicesTableAttributes.roomId.name} = ?
       ''');
 
-    ResultSet result = stmt.select([device.homeId, device.roomId]);
+    // ResultSet result = stmt.select([device.homeId, device.roomId]);
 
     stmt.dispose();
 

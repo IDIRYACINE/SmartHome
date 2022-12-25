@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/core/state_manager/app_bloc.dart';
 import 'package:smarthome_algeria/src/features/dashboard/presentation/dashboard_label.dart';
 import 'package:smarthome_algeria/src/features/home/home_feature.dart';
 
@@ -12,7 +13,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int deviceControlPanelFlex = 3;
 
   void onHomeSelected(Home home, BuildContext context) {
-    BlocProvider.of<HomeBloc>(context).add(SelectHome(home));
+    BlocProvider.of<AppBloc>(context).add(SelectHome(home));
     AppNavigator.pop();
   }
 
@@ -28,7 +29,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
             },
 
           ),
-          title: BlocSelector<HomeBloc, HomeState, Home?>(
+          title: BlocSelector<AppBloc, AppState, Home?>(
               selector: (state) => state.currentHome,
               builder: (context, home) => HomeLabel(
                 onHomeSelected: (home) => onHomeSelected(home, context),

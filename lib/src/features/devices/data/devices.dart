@@ -21,7 +21,7 @@ extension DeviceTypeExtension on DeviceType {
   }
 }
 
-abstract class Device {
+class Device {
   DeviceType type;
   String name;
   int powerConsumption;
@@ -29,21 +29,22 @@ abstract class Device {
   bool isOn;
 
   Color color;
-  int? id;
-  int? index;
+  int id;
+  int roomId;
+  int homeId;
 
   Device({
     required this.type,
     required this.name,
     required this.powerConsumption,
     required this.icon,
-    required this.color,
-    this.isOn = false, 
+    this.isOn = false,
+    this.color = Colors.white,
+    required this.id,
+    this.roomId = 0,
+    this.homeId = 0,
   });
 
-  static Device build(DeviceType type, int consumption,int id, String name) {
-    return Light(powerConsumption: consumption, id: id);
-  }
 
 }
 
@@ -95,6 +96,12 @@ const List<List<int>> defaultDeviceConsumptions = [
 ];
 
 
+const List<IconData> devicesIcons = [
+  Icons.lightbulb,
+  Icons.power,
+  Icons.lock,
+];
+
 enum LightPowerConsumption { low, medium, high }
 
 extension LightPowerConsumptionExtension on LightPowerConsumption {
@@ -108,15 +115,4 @@ extension LightPowerConsumptionExtension on LightPowerConsumption {
         return 30;
     }
   }
-}
-
-class Light extends Device {
-  Light({required int powerConsumption, String name = 'Light', Color color = Colors.yellow, required int id})
-      : super(
-            type: DeviceType.light,
-            name: name,
-            powerConsumption: powerConsumption,
-            icon: Icons.lightbulb_outline,
-            color: color
-            );
 }

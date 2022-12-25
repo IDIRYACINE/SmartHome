@@ -1,48 +1,58 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
+import 'package:smarthome_algeria/src/core/state_manager/state.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
-import 'package:smarthome_algeria/src/features/devices/presentation/device_preview_card.dart';
 import 'package:smarthome_algeria/src/features/room/domain/type_aliases.dart';
 import '../domain/room.dart';
 
 class RoomPreviewWidget extends StatelessWidget {
   const RoomPreviewWidget({
     super.key,
-    required this.room,
+    required this.roomIndex,
     this.maxDevices = 4,
   });
 
-  final Room room;
+  final int roomIndex;
   final int maxDevices;
 
-  Device getDevice(int deviceId) {
+  Device getDevice(Room room, int deviceId) {
     return room.devices.firstWhere((device) => device.id == deviceId);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final displayedDevicesCount =
-    //     room.devices.length > maxDevices ? maxDevices : room.devices.length;
+    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+      final room = state.rooms[roomIndex];
+      final int roomDevicesCount = room.devices.length;
+      final textTheme = Theme.of(context).textTheme;
 
-    // return displayedDevicesCount == 0
-    //     ? _NormalPreviewView(
-    //         roomDevicesCount: room.devices.length,
-    //         roomName: room.name,
-    //         displayedDevicesCount: displayedDevicesCount,
-    //         getDevice: getDevice,
-    //       )
-    //     : const _EmptyPreviewView();
-
-    return _NormalPreviewView(
-      roomDevicesCount: 4,
-      roomName: "Test",
-      displayedDevicesCount: 4,
-      getDevice: (index) => Light(powerConsumption: 44, id: 55),
-    );
+      return Column(
+        children: [
+          Text(
+            room.name,
+            style: textTheme.displaySmall,
+          ),
+          Text(
+            "$roomDevicesCount ${AppLocalizations.of(context)!.devices}",
+            style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
+          ),
+          room.devices.isNotEmpty
+              ? _NormalPreviewView(
+                  roomDevicesCount: roomDevicesCount,
+                  roomName: room.name,
+                  displayedDevicesCount: roomDevicesCount,
+                  roomIndex: roomIndex,
+                  getDevice: (deviceIndex) => getDevice(room, deviceIndex),
+                )
+              : const _EmptyPreviewView(),
+        ],
+      );
+    });
   }
 }
 
@@ -50,6 +60,7 @@ class _NormalPreviewView extends StatelessWidget {
   const _NormalPreviewView(
       {required this.displayedDevicesCount,
       required this.roomName,
+      required this.roomIndex,
       required this.roomDevicesCount,
       required this.getDevice});
 
@@ -57,11 +68,13 @@ class _NormalPreviewView extends StatelessWidget {
   final String roomName;
   final int roomDevicesCount;
   final FetchDevice getDevice;
+  final int roomIndex;
 
   void onDeviceLongPress(Device device, int index) {
     DeviceEditorData data = DeviceEditorData(
       device: device,
       index: index,
+      roomIndex: roomIndex,
       isEditMode: true,
     );
 
@@ -70,22 +83,12 @@ class _NormalPreviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return ColoredBox(
       color: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            roomName,
-            style: textTheme.displaySmall,
-          ),
-          Text(
-            "$roomDevicesCount ${AppLocalizations.of(context)!.devices}",
-            style: textTheme.bodyMedium!.copyWith(color: Colors.grey),
-          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.2,
             child: GridView.builder(
@@ -111,6 +114,7 @@ class _NormalPreviewView extends StatelessWidget {
 
 class _EmptyPreviewView extends StatelessWidget {
   const _EmptyPreviewView();
+
 
   @override
   Widget build(BuildContext context) {

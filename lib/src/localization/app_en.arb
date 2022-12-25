@@ -50,9 +50,11 @@
   "roomName" : "Room Name",
   "noDevices": "No devices",
   "noRooms": "No rooms",
-  "noHomes": "No homes"
+  "noHomes": "No homes",
 
-
+  "theme": "Theme",
+  "lightTheme": "Light Theme",
+  "darkTheme": "Dark Theme"
 
 
 

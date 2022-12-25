@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
+import 'package:smarthome_algeria/src/core/state_manager/state.dart';
 import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 import 'package:smarthome_algeria/src/features/devices/presentation/device_label.dart';
-import 'package:smarthome_algeria/src/features/home/state/home_bloc.dart';
+import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../data/type_aliases.dart';
@@ -47,7 +48,7 @@ class DeviceSummaryCard extends StatelessWidget {
             children: [
               Icon(deviceArchetype.icon),
               Text(deviceArchetype.name),
-              BlocSelector<RoomBloc, RoomState, int>(
+              BlocSelector<AppBloc, AppState, int>(
                   selector: (state) =>
                       state.getDeviceArchetypeCount(deviceArchetype.type),
                   builder: (context, deviceCount) {
@@ -119,7 +120,7 @@ class _DeviceTypeCardState extends State<DeviceTypeCard> {
             children: [
               Icon(widget.deviceArchetype.icon),
               Text(widget.deviceArchetype.name),
-              BlocSelector<RoomBloc, RoomState, int>(
+              BlocSelector<AppBloc, AppState, int>(
                   selector: (state) => state
                       .getDeviceArchetypeCount(widget.deviceArchetype.type),
                   builder: (context, deviceCount) {
@@ -145,34 +146,53 @@ class DeviceRoomSelector extends StatefulWidget {
 
 class _DeviceRoomSelectorState extends State<DeviceRoomSelector> {
   List<Room>? rooms;
-  Room? selectedRoom;
+  _RoomWrapper? selectedRoom;
+  List<DropdownMenuItem<_RoomWrapper>>? items;
 
-  void onChanged(Room? value) {
+  void onChanged(_RoomWrapper? value) {
     setState(() {
       selectedRoom = value;
+      if (value != null) {
+        widget.onRoomSelected(value.index, value.room);
+      }
     });
   }
 
-  List<DropdownMenuItem<Room>> buildItems() {
-    List<DropdownMenuItem<Room>> items = [];
+  List<DropdownMenuItem<_RoomWrapper>> buildItems() {
+    List<DropdownMenuItem<_RoomWrapper>> items = [];
 
-    rooms?.forEach((room) {
-      items.add(DropdownMenuItem<Room>(value: room, child: Text(room.name)));
-    });
+    if (rooms != null) {
+      for (int i = 0; i < rooms!.length; i++) {
+        _RoomWrapper wrapper = _RoomWrapper(rooms![i], i);
+        DropdownMenuItem<_RoomWrapper> item = DropdownMenuItem<_RoomWrapper>(
+          value: wrapper,
+          child: Text(rooms![i].name),
+        );
+
+        items.add(item);
+      }
+    }
 
     return items;
   }
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<HomeBloc>(context).state.rooms;
+    rooms ??= BlocProvider.of<AppBloc>(context).state.rooms;
+    items ??= buildItems();
 
-    return DropdownButtonFormField<Room>(
+    return DropdownButtonFormField<_RoomWrapper>(
         decoration: InputDecoration(
-          labelText:AppLocalizations.of(context)!.home,
+          labelText: AppLocalizations.of(context)!.room,
         ),
         value: selectedRoom,
-        items: buildItems(),
+        items: items,
         onChanged: onChanged);
   }
+}
+
+class _RoomWrapper {
+  final Room room;
+  final int index;
+  _RoomWrapper(this.room, this.index);
 }

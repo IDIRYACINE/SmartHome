@@ -6,7 +6,7 @@ import 'devices.dart';
 typedef DeviceClickCallback = void Function(Device data);
 typedef DeviceTap = void Function(Device device);
 typedef DeviceLongPress = void Function(Device device,int index);
-typedef RoomClickCallback = void Function(Room data);
+typedef RoomClickCallback = void Function(int roomIndex ,Room data);
 
 typedef OnConsumptionSelected = void Function(int? consumption);
 typedef OnConsumptionChanged = void Function(String consumption);

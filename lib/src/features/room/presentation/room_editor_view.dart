@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/features/home/state/home_bloc.dart';
+import 'package:smarthome_algeria/src/core/state_manager/app_bloc.dart';
 
 class RoomEditorView extends StatefulWidget {
   const RoomEditorView({super.key, this.editMode = false});
@@ -19,7 +19,7 @@ class _RoomEditorViewState extends State<RoomEditorView> {
 
   void onSave() {
     if (formKey.currentState!.validate()) {
-      BlocProvider.of<HomeBloc>(context).add(AddRoom(roomName));
+      BlocProvider.of<AppBloc>(context).add(AddRoom(roomName));
       AppNavigator.pop();
     }
   }

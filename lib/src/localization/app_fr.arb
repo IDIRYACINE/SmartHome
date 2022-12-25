@@ -50,5 +50,8 @@
 "roomName": "Nom de la chambre",
 "noDevices": "Aucun appareil",
 "noRooms": "Aucune chambre",
-"noHomes": "Aucune maison"
+"noHomes": "Aucune maison",
+"theme": "Theme",
+"lightTheme": "Theme Blanc",
+"darkTheme": "Theme Noir"
 }
