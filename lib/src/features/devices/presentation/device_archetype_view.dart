@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 
 class DeviceArchetypeView extends StatelessWidget {
   const DeviceArchetypeView({super.key, required this.deviceArchetype});
@@ -11,7 +10,7 @@ class DeviceArchetypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final devices = BlocProvider.of<AppBloc>(context)
+    final devices = BlocProvider.of<DevicesBloc>(context)
         .state
         .getArchetypeDeviceList(deviceArchetype);
 

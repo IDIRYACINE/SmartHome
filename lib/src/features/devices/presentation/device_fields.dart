@@ -3,7 +3,6 @@ import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../data/type_aliases.dart';
 
 class DeviceConsumptionForm extends StatefulWidget {
   const DeviceConsumptionForm(

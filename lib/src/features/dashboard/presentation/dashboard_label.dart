@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 import 'package:smarthome_algeria/src/features/home/home_feature.dart';
 import '../domain/type_aliases.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -72,7 +71,7 @@ class _SelectHomePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homesList = BlocProvider.of<AppBloc>(context).state.homes;
+    final homesList = BlocProvider.of<HomeBloc>(context).state.homes;
 
     return AlertDialog(
       elevation: 0,

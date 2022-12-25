@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/core/state_manager/state.dart';
-import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
-import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
-import 'package:smarthome_algeria/src/features/devices/presentation/device_label.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
-import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../data/type_aliases.dart';
+import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
+import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 
 class DeviceButton<T> extends StatelessWidget {
   const DeviceButton(
@@ -48,7 +43,7 @@ class DeviceSummaryCard extends StatelessWidget {
             children: [
               Icon(deviceArchetype.icon),
               Text(deviceArchetype.name),
-              BlocSelector<AppBloc, AppState, int>(
+              BlocSelector<DevicesBloc, DevicesState, int>(
                   selector: (state) =>
                       state.getDeviceArchetypeCount(deviceArchetype.type),
                   builder: (context, deviceCount) {
@@ -120,7 +115,7 @@ class _DeviceTypeCardState extends State<DeviceTypeCard> {
             children: [
               Icon(widget.deviceArchetype.icon),
               Text(widget.deviceArchetype.name),
-              BlocSelector<AppBloc, AppState, int>(
+              BlocSelector<DevicesBloc, DevicesState, int>(
                   selector: (state) => state
                       .getDeviceArchetypeCount(widget.deviceArchetype.type),
                   builder: (context, deviceCount) {
@@ -178,7 +173,7 @@ class _DeviceRoomSelectorState extends State<DeviceRoomSelector> {
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<AppBloc>(context).state.rooms;
+    rooms ??= BlocProvider.of<RoomBloc>(context).state.rooms;
     items ??= buildItems();
 
     return DropdownButtonFormField<_RoomWrapper>(

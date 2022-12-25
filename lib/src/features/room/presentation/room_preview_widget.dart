@@ -3,12 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
-import 'package:smarthome_algeria/src/core/state_manager/state.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
-import 'package:smarthome_algeria/src/features/room/domain/type_aliases.dart';
-import '../domain/room.dart';
+import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 
 class RoomPreviewWidget extends StatelessWidget {
   const RoomPreviewWidget({
@@ -26,7 +23,7 @@ class RoomPreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+    return BlocBuilder<RoomBloc, RoomState>(builder: (context, state) {
       final room = state.rooms[roomIndex];
       final int roomDevicesCount = room.devices.length;
       final textTheme = Theme.of(context).textTheme;

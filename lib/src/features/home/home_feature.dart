@@ -15,4 +15,4 @@ export 'presentation/home_view.dart';
 export 'domain/home.dart';
 
 
-// export 'state/home_bloc.dart';
+export 'state/home_bloc.dart';

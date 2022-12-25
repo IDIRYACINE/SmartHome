@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smarthome_algeria/src/core/state_manager/app_bloc.dart';
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,7 +13,7 @@ class RoomListView extends StatefulWidget {
 class _RoomListViewState extends State<RoomListView> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<RoomBloc, RoomState>(
         buildWhen: (previous, current) =>
             previous.rooms.length != current.rooms.length,
         builder: (context, state) {

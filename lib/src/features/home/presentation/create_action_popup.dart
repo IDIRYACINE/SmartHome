@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
+import 'package:smarthome_algeria/src/features/home/state/home_bloc.dart';
 
 class CreateActionPopup extends StatelessWidget {
   const CreateActionPopup({Key? key}) : super(key: key);
@@ -11,9 +13,10 @@ class CreateActionPopup extends StatelessWidget {
     AppNavigator.pushNamed(homeEditorRoute);
   }
 
-  void onNewDevicePressed() {
+  void onNewDevicePressed(BuildContext context) {
+    int homeId = BlocProvider.of<HomeBloc>(context).state.currentHomeIndex;
     AppNavigator.pop();
-    AppNavigator.pushNamed(deviceEditorRoute, arguments: DeviceEditorData());
+    AppNavigator.pushNamed(deviceEditorRoute, arguments: DeviceEditorData(homeId: homeId));
   }
 
   void onNewRoomPressed() {
@@ -39,7 +42,7 @@ class CreateActionPopup extends StatelessWidget {
         ),
         MaterialButton(
           minWidth: double.infinity,
-          onPressed: onNewDevicePressed,
+          onPressed: () => onNewDevicePressed(context),
           child: Text(
             _PopupMenuItem.newDevice.label(context),
             style: textStyle,

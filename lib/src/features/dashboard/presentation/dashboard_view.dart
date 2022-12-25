@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
 import 'package:smarthome_algeria/src/features/dashboard/presentation/dashboard_rooms_listview.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smarthome_algeria/src/features/home/state/home_bloc.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -28,7 +28,7 @@ class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool atLeastOneHome =
-        BlocProvider.of<AppBloc>(context, listen: true).state.homes.isNotEmpty;
+        BlocProvider.of<HomeBloc>(context, listen: true).state.homes.isNotEmpty;
 
     return atLeastOneHome
         ? buildDashboardBody(context)

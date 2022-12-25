@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
-import 'package:smarthome_algeria/src/features/devices/domain/device_editor_controller.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
-import 'device_button.dart';
-import 'device_fields.dart';
-import 'device_panel_view.dart';
+import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
+import 'package:smarthome_algeria/src/features/room/state/bloc.dart';
 
 class DeviceEditorView extends StatefulWidget {
   const DeviceEditorView({super.key, required this.editorSettings});
@@ -27,7 +23,7 @@ class _DeviceEditorViewState extends State<DeviceEditorView> {
   @override
   Widget build(BuildContext context) {
 
-    controller ??= DeviceEditorController(BlocProvider.of<AppBloc>(context), widget.editorSettings);
+    controller ??= DeviceEditorController(BlocProvider.of<RoomBloc>(context), widget.editorSettings);
     
     return Scaffold(
       appBar: _DeviceEditorAppBar(

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
-import '../domain/room.dart';
-import '../domain/type_aliases.dart';
+import 'package:smarthome_algeria/src/features/room/room_feature.dart';
+
 
 class ScaffoldRoomsSelectorView extends StatefulWidget {
   const ScaffoldRoomsSelectorView({Key? key}) : super(key: key);
@@ -38,7 +37,7 @@ class _ScaffoldRoomsSelectorViewState extends State<ScaffoldRoomsSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<AppBloc>(context).state.rooms;
+    rooms ??= BlocProvider.of<RoomBloc>(context).state.rooms;
 
     return Scaffold(
       appBar: _AppBar(
@@ -156,7 +155,7 @@ class _PopupRoomsSelectorViewState extends State<PopupRoomsSelectorView> {
 
   @override
   Widget build(BuildContext context) {
-    rooms ??= BlocProvider.of<AppBloc>(context).state.rooms;
+    rooms ??= BlocProvider.of<RoomBloc>(context).state.rooms;
 
     return AlertDialog(
       content: ListView.separated(

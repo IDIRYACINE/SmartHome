@@ -33,6 +33,12 @@ class Device {
   int roomId;
   int homeId;
 
+  // this is used to identify the device quickly in the devicesState
+  // it is not used in the database
+  // don't manipulate this value
+  final int uniqueId = _uniqueId;
+  static int _uniqueId = 0;
+
   Device({
     required this.type,
     required this.name,
@@ -43,7 +49,9 @@ class Device {
     required this.id,
     this.roomId = 0,
     this.homeId = 0,
-  });
+  }){
+    _uniqueId++;
+  }
 
 
 }

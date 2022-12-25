@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
-import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
-import 'package:smarthome_algeria/src/features/devices/data/type_aliases.dart';
-import 'package:smarthome_algeria/src/features/devices/presentation/device_button.dart';
+import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 
-typedef DeviceClickCallback = void Function(Device data);
 
 class DeviceControlPanelView extends StatelessWidget {
   final double padding = 8;

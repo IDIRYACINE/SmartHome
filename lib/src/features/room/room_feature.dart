@@ -12,3 +12,5 @@ export 'state/bloc.dart';
 export 'state/state.dart';
 
 export 'state/events.dart';
+
+export 'domain/type_aliases.dart';

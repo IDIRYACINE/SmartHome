@@ -1,4 +1,3 @@
-import 'package:smarthome_algeria/src/features/room/domain/room.dart';
 import '../domain/home.dart';
 
 class HomeEvents {}
@@ -29,23 +28,4 @@ class SelectHome extends HomeEvents {
   final Home home;
 
   SelectHome(this.home);
-}
-
-class AddRoom extends HomeEvents {
-  final String roomName;
-
-  AddRoom(this.roomName,);
-}
-
-class UpdateRoom extends HomeEvents {
-  final Room room;
-  final int index;
-
-  UpdateRoom(this.room,this.index);
-}
-
-class RemoveRoom extends HomeEvents {
-  final Room room;
-
-  RemoveRoom(this.room, );
 }

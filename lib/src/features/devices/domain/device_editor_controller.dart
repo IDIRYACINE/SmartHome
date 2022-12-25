@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
-import 'package:smarthome_algeria/src/core/state_manager/bloc.dart';
-import 'package:smarthome_algeria/src/core/state_manager/events.dart';
+import 'package:smarthome_algeria/src/features/devices/data/device_archetype.dart';
+import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
-import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
-import 'package:smarthome_algeria/src/features/room/domain/room.dart';
+import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 
 class DeviceEditorController {
   final GlobalKey<FormState> key = GlobalKey();
-  final AppBloc appBloc;
+  final RoomBloc roomBloc;
   final DeviceEditorData editorSettings;
 
   String deviceName = "";
   int powerConsumption = 0;
   DeviceType deviceType = DeviceType.light;
   int? roomIndex;
+  int? roomId;
   Room? deviceRoom;
 
-  DeviceEditorController(this.appBloc, this.editorSettings);
+  DeviceEditorController(this.roomBloc, this.editorSettings);
 
   void onDeviceClick(int index, DeviceArchetype device) {
     deviceType = device.type;
@@ -26,17 +26,20 @@ class DeviceEditorController {
   void onSave() {
     if (key.currentState!.validate()) {
       if (editorSettings.isEditMode) {
-        appBloc.add(UpdateDevice(
+        roomBloc.add(UpdateDevice(
           device: editorSettings.device!,
-          index: editorSettings.index!,
           roomIndex: editorSettings.roomIndex!,
+          deviceIndex: editorSettings.index!,
         ));
       } else {
-        appBloc.add(AddDevice(
-            type: deviceType,
-            consumption: powerConsumption,
-            name: deviceName,
-            roomIndex: roomIndex!,));
+        roomBloc.add(AddDevice(
+          type: deviceType,
+          consumption: powerConsumption,
+          name: deviceName,
+          homeId: editorSettings.homeId!,
+          roomId: roomId!,
+          roomIndex: roomIndex!,
+        ));
       }
       AppNavigator.pop();
     }
@@ -58,8 +61,9 @@ class DeviceEditorController {
     }
   }
 
-  void selectRoom(int? index,Room? room) {
+  void selectRoom(int? index, Room? room) {
     deviceRoom = room;
+    roomId = room?.id;
     roomIndex = index ?? 0;
   }
 }
