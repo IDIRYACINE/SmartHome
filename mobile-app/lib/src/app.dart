@@ -7,7 +7,7 @@ import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:smarthome_algeria/src/features/home/state/home_bloc.dart';
 import 'package:smarthome_algeria/src/features/room/state/bloc.dart';
 
-import 'settings/settings_controller.dart';
+import 'core/settings/settings_controller.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({

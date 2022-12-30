@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/services.dart';
 
 import 'events.dart';
 import 'state.dart';
@@ -22,6 +24,8 @@ class DevicesBloc extends Bloc<DeviceEvent, DevicesState> {
     DevicesState newState =
         state.copyWithDeviceType(event.device.type, updatedDevices);
 
+    _removeDeviceOnDatabase(event.device);
+
     emit(newState);
   }
 
@@ -32,6 +36,9 @@ class DevicesBloc extends Bloc<DeviceEvent, DevicesState> {
 
     DevicesState newState =
         state.copyWithDeviceType(event.device.type, updatedDevices);
+
+    _updateDeviceOnDatabase(event.device);
+
     emit(newState);
   }
 
@@ -42,6 +49,26 @@ class DevicesBloc extends Bloc<DeviceEvent, DevicesState> {
     DevicesState newState =
         state.copyWithDeviceType(event.device.type, updatedDevices);
 
+    _addDeviceOnDatabase(event.device);
+
     emit(newState);
+  }
+
+  void _updateDeviceOnDatabase(Device device) {
+    ServiceMessage message =
+        DatabaseMessageBuilder.updateDeviceMessage(device, () {});
+    ServicesProvider.instance.sendMessage(message);
+  }
+
+  void _addDeviceOnDatabase(Device device) {
+    ServiceMessage message =
+        DatabaseMessageBuilder.addDeviceMessage(device, () {});
+    ServicesProvider.instance.sendMessage(message);
+  }
+
+  void _removeDeviceOnDatabase(Device device) {
+    ServiceMessage message =
+        DatabaseMessageBuilder.deleteDeviceMessage(device, () {});
+    ServicesProvider.instance.sendMessage(message);
   }
 }

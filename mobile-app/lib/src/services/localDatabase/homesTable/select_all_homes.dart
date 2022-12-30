@@ -2,11 +2,11 @@ import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/types.dart' as app;
 
-class SelectHome extends TaskDelegate<void, void> {
+class SelectAllHomes extends TaskDelegate<void, void> {
   final Database _db;
-  late ServiceMessageData _messageData;
+  late ServiceMessageData<void> _messageData;
 
-  SelectHome(this._db);
+  SelectAllHomes(this._db);
 
   @override
   Future<ServiceResponse<void>> execute() async {
@@ -44,5 +44,5 @@ class SelectHome extends TaskDelegate<void, void> {
   }
 
   @override
-  int get taskId => app.DatabaseActions.selecttHome.index;
+  int get taskId => app.DatabaseActions.selectHome.index;
 }

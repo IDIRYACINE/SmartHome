@@ -115,9 +115,12 @@ class SqliteDatabase implements app.Database {
       DeleteHome(_db),
       DeleteRoom(_db),
       DeleteDevice(_db),
-      SelectHome(_db),
+      SelectAllHomes(_db),
       SelectRoom(_db),
       SelectDevice(_db),
     ];
   }
+
+  @override
+  int get serviceId => AppServices.localDatabase.index;
 }

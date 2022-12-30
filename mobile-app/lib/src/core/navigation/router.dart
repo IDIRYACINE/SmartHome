@@ -9,8 +9,8 @@ import 'package:smarthome_algeria/src/features/devices/presentation/device_arche
 import 'package:smarthome_algeria/src/features/home/presentation/home_view.dart';
 import 'package:smarthome_algeria/src/features/home/presentation/home_editor_view.dart';
 import 'package:smarthome_algeria/src/features/room/presentation/room_editor_view.dart';
-import 'package:smarthome_algeria/src/settings/settings_controller.dart';
-import 'package:smarthome_algeria/src/settings/settings_view.dart';
+import 'package:smarthome_algeria/src/core/settings/settings_controller.dart';
+import 'package:smarthome_algeria/src/core/settings/settings_view.dart';
 
 import 'routes.dart';
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smarthome_algeria/src/services/servicesProvider/services_store.dart';
 
 import 'src/app.dart';
-import 'src/settings/settings_controller.dart';
-import 'src/settings/settings_service.dart';
+import 'src/core/settings/settings_controller.dart';
+import 'src/core/settings/settings_service.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple

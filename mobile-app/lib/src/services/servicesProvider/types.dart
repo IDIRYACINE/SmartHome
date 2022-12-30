@@ -27,7 +27,7 @@ abstract class ServiceMessage<T> {
   ServiceMessageData getDataObject(int messageId);
 }
 
-abstract class ServiceMessageData<T> {
+class ServiceMessageData<T> {
   final int messageId;
   final int serviceId;
   final int taskId;
@@ -48,6 +48,7 @@ class ServiceResponse<T> {
 }
 
 abstract class Service {
+  int get serviceId;
   Future<ServiceResponse> handleMessage(ServiceMessageData message);
 }
 
@@ -67,4 +68,10 @@ enum OperationStatus {
   success,
   noData,
   error,
+}
+
+
+enum AppServices{
+  localDatabase,
+  remoteServer,
 }

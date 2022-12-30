@@ -7,6 +7,9 @@ import 'package:smarthome_algeria/src/features/devices/devices_feature.dart'
 import 'package:smarthome_algeria/src/features/room/domain/room.dart';
 import 'package:smarthome_algeria/src/features/room/state/events.dart';
 import 'package:smarthome_algeria/src/features/room/state/state.dart';
+import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/services_store.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 
 class RoomBloc extends Bloc<RoomEvents, RoomState> {
   final devices.DevicesBloc devicesBloc;
@@ -41,6 +44,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
           .toList();
 
+      _addRoomOnDatabase(room);
+
       emit(
         state.copyWith(
             roomGroups: updatedHomeRooms, roomGroup: updatedGroupRoom),
@@ -65,6 +70,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
           .toList();
 
+      _updateRoomOnDatabase(event.room);
+
       emit(
         state.copyWith(
             roomGroups: updatedHomeRooms, roomGroup: updatedGroupRoom),
@@ -84,6 +91,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       final updatedHomeRooms = state.roomGroups
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
           .toList();
+
+      _removeRoomOnDatabase(event.room);
 
       emit(
         state.copyWith(
@@ -209,5 +218,23 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
 
     emit(state.copyWith(
         roomGroups: updateGroupRooms, roomGroup: updatedGroupRoom));
+  }
+
+  void _addRoomOnDatabase(Room room) {
+    ServiceMessage message =
+        DatabaseMessageBuilder.addRoomMessage(room, state.currentHomeId, () {});
+    ServicesProvider.instance.sendMessage(message);
+  }
+
+  void _removeRoomOnDatabase(Room room) {
+    ServiceMessage message = DatabaseMessageBuilder.updateRoomMessage(
+        room, state.currentHomeId, () {});
+    ServicesProvider.instance.sendMessage(message);
+  }
+
+  void _updateRoomOnDatabase(Room room) {
+    ServiceMessage message = DatabaseMessageBuilder.deleteRoomMessage(
+        room, state.currentHomeId, () {});
+    ServicesProvider.instance.sendMessage(message);
   }
 }

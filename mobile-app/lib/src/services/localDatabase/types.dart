@@ -12,6 +12,8 @@ abstract class Database implements Service {
 
 }
 
+
+
 enum DatabaseTables {
   homes,
   devices,
@@ -45,7 +47,7 @@ enum DatabaseActions{
   deleteHome,
   deleteRoom,
   deleteDevice,
-  selecttHome,
+  selectHome,
   selectRoom,
   selectDevice,
 }
