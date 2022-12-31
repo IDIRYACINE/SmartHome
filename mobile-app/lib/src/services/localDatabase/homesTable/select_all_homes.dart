@@ -1,31 +1,35 @@
+import 'package:smarthome_algeria/src/features/home/domain/home.dart';
+import 'package:smarthome_algeria/src/services/localDatabase/repository/home_repository.dart';
 import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/types.dart' as app;
 
-class SelectAllHomes extends TaskDelegate<void, void> {
+class SelectAllHomes extends TaskDelegate<List<Home>, void> {
   final Database _db;
   late ServiceMessageData<void> _messageData;
 
   SelectAllHomes(this._db);
 
   @override
-  Future<ServiceResponse<void>> execute() async {
-    ServiceResponse response;
+  Future<ServiceResponse<List<Home>>> execute() async {
+    ServiceResponse<List<Home>> response;
+    List<Home> homes;
     try {
-      _selectHome();
+      homes = _loadAllHomes();
 
-      response = ServiceResponse(
-        data: null,
+      response = ServiceResponse<List<Home>>(
+        data: homes,
         messageId: _messageData.messageId,
         status: OperationStatus.success,
       );
     } catch (e) {
-      response = ServiceResponse(
-        data: null,
+      response = ServiceResponse<List<Home>>(
+        data: [],
         messageId: _messageData.messageId,
         status: OperationStatus.error,
       );
     }
+
     return response;
   }
 
@@ -34,13 +38,16 @@ class SelectAllHomes extends TaskDelegate<void, void> {
     _messageData = message;
   }
 
-  void _selectHome() {
+  List<Home> _loadAllHomes() {
     final stmt = _db.prepare('''
       SELECT * FROM homes
       ''');
 
-    stmt.execute();
+    ResultSet results = stmt.select();
+
     stmt.dispose();
+
+    return resultSetToHomeList(results);
   }
 
   @override

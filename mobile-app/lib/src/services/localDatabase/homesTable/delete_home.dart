@@ -1,13 +1,12 @@
-import 'package:smarthome_algeria/src/features/home/domain/home.dart';
 import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/types.dart' as app;
 
 import 'delegate.dart';
 
-class DeleteHome extends TaskDelegate<void, Home> {
+class DeleteHome extends TaskDelegate<void, DeleteHomeData> {
   final Database _db;
-  late ServiceMessageData _messageData;
+  late ServiceMessageData<DeleteHomeData> _messageData;
 
   DeleteHome(this._db);
 
@@ -33,12 +32,11 @@ class DeleteHome extends TaskDelegate<void, Home> {
   }
 
   @override
-  Future<void> setTaskData(ServiceMessageData<Home> message) async{
+  Future<void> setTaskData(ServiceMessageData<DeleteHomeData> message) async{
     _messageData = message;
   }
   
   void _deleteHome() {
-    final home = _messageData.data as Home;
 
     final stmt = _db.prepare(
       '''
@@ -46,7 +44,7 @@ class DeleteHome extends TaskDelegate<void, Home> {
       WHERE ${HomeTableAttributes.homeId.name} = ?
       ''');
 
-    stmt.execute([home.id]);
+    stmt.execute([_messageData.data!.homeId]);
     stmt.dispose();
   }
 

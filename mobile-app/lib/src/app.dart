@@ -25,11 +25,16 @@ class _MyAppState extends State<MyApp> {
   RoomBloc? roomBLoc;
 
   HomeBloc? homeBloc;
-  DevicesBloc? devicesBloc ;
+  DevicesBloc? devicesBloc;
+
+  @override
+  void initState() {
+    super.initState();
+   
+  }
 
   @override
   Widget build(BuildContext context) {
-
     devicesBloc ??= DevicesBloc();
     roomBLoc ??= RoomBloc(devicesBloc!);
     homeBloc ??= HomeBloc(roomBLoc!);
@@ -41,15 +46,12 @@ class _MyAppState extends State<MyApp> {
           providers: [
             BlocProvider<HomeBloc>(
               create: (context) => homeBloc!,
-
             ),
-             BlocProvider<RoomBloc>(
+            BlocProvider<RoomBloc>(
               create: (context) => roomBLoc!,
-              
             ),
-             BlocProvider<DevicesBloc>(
+            BlocProvider<DevicesBloc>(
               create: (context) => devicesBloc!,
-              
             ),
           ],
           child: MaterialApp(

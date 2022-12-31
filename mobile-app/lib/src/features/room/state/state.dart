@@ -4,12 +4,10 @@ import 'package:smarthome_algeria/src/features/room/domain/room.dart';
 class RoomState extends Equatable {
   final List<RoomGroup> roomGroups;
   final int currentHomeId;
-  final RoomGroup? currentHomeRooms;
 
   const RoomState({
     required this.roomGroups,
     this.currentHomeId = 0,
-    this.currentHomeRooms,
   });
 
   static RoomState initialState() {
@@ -19,11 +17,10 @@ class RoomState extends Equatable {
   @override
   List<Object?> get props => [rooms];
 
-  RoomState copyWith({List<RoomGroup>? roomGroups, int? currentHomeId, RoomGroup? roomGroup}) {
+  RoomState copyWith({List<RoomGroup>? roomGroups, int? currentHomeId}) {
     return RoomState(
       roomGroups: roomGroups ?? this.roomGroups,
       currentHomeId: currentHomeId ?? this.currentHomeId,
-      currentHomeRooms: roomGroup ?? this.roomGroup,
     );
   }
 
@@ -39,6 +36,7 @@ class RoomState extends Equatable {
         result = roomGroups[i];
       }
     }
+
 
     return result;
   }

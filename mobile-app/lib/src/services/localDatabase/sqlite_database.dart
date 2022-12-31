@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:smarthome_algeria/src/services/localDatabase/types.dart' as app;
 import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 
@@ -10,22 +12,28 @@ class SqliteDatabase implements app.Database {
   late String _filename;
   late Database _db;
 
-  late List<TaskDelegate> _actions;
+  final List<TaskDelegate> _actions = [];
 
-  SqliteDatabase({String filename = 'smarthome.db'}) {
-    _filename = filename;
+  bool isConnected = false;
+
+  SqliteDatabase({String filename = 'smarthome.db', String dbPath = ''}) {
+    _filename = "$dbPath/$filename";
   }
 
   @override
   Future<bool> connect() async {
     try {
       _db = sqlite3.open(_filename);
+
       createTables();
       _registerActions();
-      return true;
+
+      isConnected = true;
     } catch (e) {
-      return false;
+//
     }
+
+    return isConnected;
   }
 
   @override
@@ -48,6 +56,12 @@ class SqliteDatabase implements app.Database {
   @override
   Future<ServiceResponse> handleMessage(ServiceMessageData message) async {
     ServiceResponse response;
+    print("got message ${message.taskId}");
+
+    if (!isConnected) {
+      await connect();
+    }
+
     try {
       final action = _actions[message.taskId];
       await action.setTaskData(message);
@@ -66,10 +80,7 @@ class SqliteDatabase implements app.Database {
     String stmt =
         ''' CREATE Table IF NOT EXISTS ${app.DatabaseTables.homes.name} (
       ${HomeTableAttributes.homeId.name} ${HomeTableAttributes.homeId.type},
-      ${HomeTableAttributes.homeName.name} ${HomeTableAttributes.homeName.type},
-      PRIMARY KEY (${HomeTableAttributes.homeId.name})
-
-    ''';
+      ${HomeTableAttributes.homeName.name} ${HomeTableAttributes.homeName.type})''';
 
     return stmt;
   }
@@ -80,9 +91,7 @@ class SqliteDatabase implements app.Database {
       ${RoomsTableAttributes.homeId.name} ${RoomsTableAttributes.homeId.type},
       ${RoomsTableAttributes.roomId.name} ${RoomsTableAttributes.roomId.name},
       ${RoomsTableAttributes.roomName.name} ${RoomsTableAttributes.roomName.name},
-      PRIMARY KEY (${RoomsTableAttributes.homeId.name}, ${RoomsTableAttributes.roomId.name})
-
-    ''';
+      PRIMARY KEY (${RoomsTableAttributes.homeId.name}, ${RoomsTableAttributes.roomId.name}))''';
 
     return stmt;
   }
@@ -96,7 +105,7 @@ class SqliteDatabase implements app.Database {
       ${DevicesTableAttributes.deviceName.name} ${DevicesTableAttributes.deviceName.name},
       ${DevicesTableAttributes.deviceType.name} ${DevicesTableAttributes.deviceType.name},
       PRIMARY KEY (${DevicesTableAttributes.homeId.name}, ${DevicesTableAttributes.roomId.name}, ${DevicesTableAttributes.deviceId.name})
-
+      )
     ''';
 
     return stmt;
@@ -104,21 +113,19 @@ class SqliteDatabase implements app.Database {
 
   void _registerActions() {
     //important same order as in the enum
-
-    _actions = [
-      InsertHome(_db),
-      InsertRoom(_db),
-      InsertDevice(_db),
-      UpdateHome(_db),
-      UpdateRoom(_db),
-      UpdateDevice(_db),
-      DeleteHome(_db),
-      DeleteRoom(_db),
-      DeleteDevice(_db),
-      SelectAllHomes(_db),
-      SelectRoom(_db),
-      SelectDevice(_db),
-    ];
+    _actions
+      ..add(InsertHome(_db))
+      ..add(InsertRoom(_db))
+      ..add(InsertDevice(_db))
+      ..add(UpdateHome(_db))
+      ..add(UpdateRoom(_db))
+      ..add(UpdateDevice(_db))
+      ..add(DeleteHome(_db))
+      ..add(DeleteRoom(_db))
+      ..add(DeleteDevice(_db))
+      ..add(SelectAllHomes(_db))
+      ..add(SelectRoom(_db))
+      ..add(SelectDevice(_db));
   }
 
   @override

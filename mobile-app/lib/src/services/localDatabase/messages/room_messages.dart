@@ -66,7 +66,7 @@ class DeleteRoomMessage extends ServiceMessage {
   }
 }
 
-class LoadAllRoomsMessage extends ServiceMessage<List<Room>> {
+class LoadAllRoomsMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;
   final _taskId = DatabaseActions.selectRoom.index;
 

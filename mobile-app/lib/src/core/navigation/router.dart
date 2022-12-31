@@ -11,6 +11,7 @@ import 'package:smarthome_algeria/src/features/home/presentation/home_editor_vie
 import 'package:smarthome_algeria/src/features/room/presentation/room_editor_view.dart';
 import 'package:smarthome_algeria/src/core/settings/settings_controller.dart';
 import 'package:smarthome_algeria/src/core/settings/settings_view.dart';
+import 'package:smarthome_algeria/src/features/splash/splash_view.dart';
 
 import 'routes.dart';
 
@@ -52,7 +53,7 @@ abstract class AppRouter {
       default:
         return getPageRoute(
           settings: settings,
-          view: const HomeView(),
+          view: const SplashView(),
         );
     }
   }

@@ -1,10 +1,9 @@
-
 import 'package:smarthome_algeria/src/services/remoteServer/apis/post_device_state.dart';
 import 'package:smarthome_algeria/src/services/remoteServer/utility/mqtt_wrapper.dart';
 import 'package:smarthome_algeria/src/services/servicesProvider/service.dart';
 
 class RemoteServer extends Service {
-  late List<TaskDelegate> _actions;
+  final List<TaskDelegate> _actions = [];
 
   late MQTTClientWrapper _client;
 
@@ -13,10 +12,8 @@ class RemoteServer extends Service {
           '0cd5c4fc8a9d45468efdcc59f176a76d.s2.eu.hivemq.cloud:8883',
       String username = 'idiryacine',
       String password = 'Idiryacine34'}) {
-
     _client = MQTTClientWrapper();
     _client.prepareMqttClient();
-  
 
     _registerActions();
   }
@@ -38,13 +35,10 @@ class RemoteServer extends Service {
     return response;
   }
 
-
   @override
   int get serviceId => AppServices.remoteServer.index;
 
   void _registerActions() {
-    _actions = [
-      PostDeviceState(_client),
-    ];
+    _actions.add(PostDeviceState(_client));
   }
 }

@@ -1,5 +1,6 @@
 
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
+import 'package:smarthome_algeria/src/features/home/domain/home.dart';
 
 import '../domain/room.dart';
 
@@ -37,6 +38,18 @@ class RemoveHomeGroup extends RoomEvents {
   RemoveHomeGroup(this.homeId);
 }
 
+
+class NotifyHomesLoaded extends RoomEvents {
+  final List<Home> homes;
+
+  NotifyHomesLoaded(this.homes);
+}
+
+class NotifyHomeSelected extends RoomEvents {
+  final int homeId;
+
+  NotifyHomeSelected(this.homeId);
+}
 
 class AddDevice extends RoomEvents {
   final DeviceType type;

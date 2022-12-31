@@ -6,8 +6,9 @@ import 'package:smarthome_algeria/src/services/remoteServer/service.dart';
 import 'types.dart';
 
 class ServiceForwarder implements ServiceGateway {
-  ServiceForwarder({required this.uiThreadPort}) {
-    _registerServices();
+  ServiceForwarder(
+      {required this.uiThreadPort, required String documentsPath}) {
+    _registerServices(documentsPath);
   }
 
   final SendPort uiThreadPort;
@@ -34,8 +35,8 @@ class ServiceForwarder implements ServiceGateway {
     _services.add(service);
   }
 
-  void _registerServices() {
-    _services.add(SqliteDatabase());
+  void _registerServices(String documentsPath) {
+    _services.add(SqliteDatabase(dbPath: documentsPath));
     _services.add(RemoteServer());
   }
 }

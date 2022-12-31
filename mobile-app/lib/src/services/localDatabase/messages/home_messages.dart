@@ -63,7 +63,7 @@ class DeleteHomeMessage extends ServiceMessage {
   }
 }
 
-class LoadAllHomesMessage extends ServiceMessage<List<Home>> {
+class LoadAllHomesMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;
   final _taskId = DatabaseActions.selectHome.index;
 

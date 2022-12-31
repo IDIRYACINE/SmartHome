@@ -1,15 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:typed_data/typed_buffers.dart';
 
-
 class MQTTClientWrapper {
-
   late MqttServerClient client;
 
   final String _devicesStatetopic = 'Dart/Mqtt_client/devicesState';
@@ -22,8 +19,6 @@ class MQTTClientWrapper {
   void prepareMqttClient() async {
     _setupMqttClient();
     await _connectClient();
-    _subscribeToTopic(_devicesResponsesTopic);
-    _publishMessage('Hello');
   }
 
   // waiting for the connection, if an error occurs, print it and disconnect
@@ -31,7 +26,7 @@ class MQTTClientWrapper {
     try {
       connectionState = MqttCurrentConnectionState.CONNECTING;
       await client.connect('idiryacine', 'idiryacine34');
-    } on Exception catch (e) {
+    } on Exception {
       connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
       client.disconnect();
     }
@@ -40,13 +35,16 @@ class MQTTClientWrapper {
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
       connectionState = MqttCurrentConnectionState.CONNECTED;
     } else {
-          connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
+      connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
       client.disconnect();
     }
   }
 
   void _setupMqttClient() {
-    client = MqttServerClient.withPort('0cd5c4fc8a9d45468efdcc59f176a76d.s2.eu.hivemq.cloud', 'idiryacine', 8883);
+    client = MqttServerClient.withPort(
+        '0cd5c4fc8a9d45468efdcc59f176a76d.s2.eu.hivemq.cloud',
+        'idiryacine',
+        8883);
     // the next 2 lines are necessary to connect with tls, which is used by HiveMQ Cloud
     client.secure = true;
     client.securityContext = SecurityContext.defaultContext;
@@ -61,10 +59,7 @@ class MQTTClientWrapper {
 
     // print the message when it is received
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-      final MqttMessage recMess = c[0].payload;
-
-      String message = recMess.toString();
-      print(message);
+      // final MqttMessage recMess = c[0].payload;
 
     });
   }
@@ -73,7 +68,8 @@ class MQTTClientWrapper {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
 
-    client.publishMessage(_devicesStatetopic, MqttQos.exactlyOnce, builder.payload!);
+    client.publishMessage(
+        _devicesStatetopic, MqttQos.exactlyOnce, builder.payload!);
   }
 
   void publishByteMessage(Uint8Buffer message) {
@@ -91,10 +87,10 @@ class MQTTClientWrapper {
 
   void _onConnected() {
     connectionState = MqttCurrentConnectionState.CONNECTED;
+    _subscribeToTopic(_devicesStatetopic);
+    _publishMessage('Hello');
   }
-
 }
-
 
 enum MqttCurrentConnectionState {
   IDLE,
@@ -104,7 +100,4 @@ enum MqttCurrentConnectionState {
   ERROR_WHEN_CONNECTING
 }
 
-enum MqttSubscriptionState {
-  IDLE,
-  SUBSCRIBED
-}
+enum MqttSubscriptionState { IDLE, SUBSCRIBED }

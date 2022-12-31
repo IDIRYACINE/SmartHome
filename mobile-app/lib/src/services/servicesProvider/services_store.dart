@@ -7,7 +7,7 @@ import 'services_gateway.dart';
 
 class ServicesProvider  {
 
-  ServicesProvider._() {
+  ServicesProvider._(String documentsPath){
     ReceivePort uiPort = ReceivePort();
 
     uiPort.listen((message) {
@@ -20,9 +20,9 @@ class ServicesProvider  {
       _receiveMessage(message);
     });
 
-    Isolate.spawn(_registerPort, uiPort.sendPort).then((isolate) {
-      _isolateBackground = isolate;
-    });
+    IsolateParameters params = IsolateParameters( uiPort.sendPort, documentsPath);
+
+    Isolate.spawn<IsolateParameters>(_registerPort, params);
   }
 
   static ServicesProvider? _instance;
@@ -31,23 +31,21 @@ class ServicesProvider  {
 
   late SendPort _backgroundThreadPort;
 
-  // ignore: unused_field
-  late Isolate _isolateBackground;
 
   final List<ServiceMessage> _messagesQueue = [];
 
-  static ServicesProvider getInstance() {
-    _instance ??= ServicesProvider._();
+  static ServicesProvider getInstance(String? documentsPath) {
+    _instance ??= ServicesProvider._(documentsPath!);
     return _instance!;
   }
 
-  void _registerPort(SendPort sendPort) async {
+  void _registerPort(IsolateParameters params) async {
     ReceivePort servicePort = ReceivePort();
 
     ServiceGateway eventsForwarder =
-        ServiceForwarder(uiThreadPort: sendPort);
+        ServiceForwarder(uiThreadPort: params.uiThreadPort,documentsPath: params.appDocumentsPath);
 
-    sendPort.send(servicePort.sendPort);
+    params.uiThreadPort.send(servicePort.sendPort);
 
     servicePort.listen((message) {
       eventsForwarder.forwardMessage(message);
@@ -57,14 +55,16 @@ class ServicesProvider  {
   void sendMessage(ServiceMessage message) {
     int messageId = _messagesQueue.length;
     ServiceMessageData jsonMessage = message.getDataObject(messageId);
+    message.messageId = messageId;
     _backgroundThreadPort.send(jsonMessage);
-    _messagesQueue[messageId] = message;
+    _messagesQueue.add( message);
   }
 
   void _receiveMessage(ServiceResponse response) {
     // using dyanamic type checking to avoid runtime errors ,
     // otherwise message generic type is casted to dynamic instead of T
-    ServiceMessage? message = _binarySearchServiceMessage(response.messageId);
+
+    final message = _binarySearchServiceMessage(response.messageId);
 
     if(message == null) {
       return;
@@ -86,6 +86,8 @@ class ServicesProvider  {
   ServiceMessage? _binarySearchServiceMessage(int messageId) {
     int min = 0;
     int max = _messagesQueue.length - 1;
+
+
 
     while (min <= max) {
       int mid = (min + max) ~/ 2;

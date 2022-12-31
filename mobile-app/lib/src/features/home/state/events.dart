@@ -29,3 +29,9 @@ class SelectHome extends HomeEvents {
 
   SelectHome(this.home);
 }
+
+class LoadAllHomes extends HomeEvents {
+  final List<Home> homes;
+
+  LoadAllHomes(this.homes);
+}

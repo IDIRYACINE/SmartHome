@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/services.dart';
 import 'package:smarthome_algeria/src/services/remoteServer/utility/mqtt_wrapper.dart';

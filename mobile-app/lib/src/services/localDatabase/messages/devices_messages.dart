@@ -81,7 +81,7 @@ class DeleteDeviceMessage extends ServiceMessage {
   }
 }
 
-class LoadAllDevicesMessage extends ServiceMessage<List<Device>> {
+class LoadAllDevicesMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;
   final _taskId = DatabaseActions.selectDevice.index;
 
