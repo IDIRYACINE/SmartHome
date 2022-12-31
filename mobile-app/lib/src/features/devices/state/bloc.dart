@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smarthome_algeria/src/features/devices/data/devices.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
-import 'package:smarthome_algeria/src/services/servicesProvider/services.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/service.dart';
 
 import 'events.dart';
 import 'state.dart';

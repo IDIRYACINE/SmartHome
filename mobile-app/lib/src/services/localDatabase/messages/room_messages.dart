@@ -1,7 +1,7 @@
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/roomsTable/delegate.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
-import 'package:smarthome_algeria/src/services/servicesProvider/services.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/service.dart';
 
 class AddRoomMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;

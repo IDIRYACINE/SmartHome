@@ -1,7 +1,7 @@
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/devicesTable/types.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
-import 'package:smarthome_algeria/src/services/servicesProvider/services.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/service.dart';
 
 class AddDeviceMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;

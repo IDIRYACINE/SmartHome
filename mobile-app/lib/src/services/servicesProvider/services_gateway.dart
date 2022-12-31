@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:smarthome_algeria/src/services/localDatabase/service.dart';
+import 'package:smarthome_algeria/src/services/remoteServer/service.dart';
 
 import 'types.dart';
 
@@ -35,5 +36,6 @@ class ServiceForwarder implements ServiceGateway {
 
   void _registerServices() {
     _services.add(SqliteDatabase());
+    _services.add(RemoteServer());
   }
 }
