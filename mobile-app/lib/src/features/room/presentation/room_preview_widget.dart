@@ -6,6 +6,8 @@ import 'package:smarthome_algeria/src/core/navigation/navigator.dart';
 import 'package:smarthome_algeria/src/features/devices/data/routes_data.dart';
 import 'package:smarthome_algeria/src/features/devices/devices_feature.dart';
 import 'package:smarthome_algeria/src/features/room/room_feature.dart';
+import 'package:smarthome_algeria/src/services/remoteServer/service.dart';
+import 'package:smarthome_algeria/src/services/servicesProvider/service.dart';
 
 class RoomPreviewWidget extends StatelessWidget {
   const RoomPreviewWidget({
@@ -78,6 +80,11 @@ class _NormalPreviewView extends StatelessWidget {
     AppNavigator.pushNamed(deviceEditorRoute, arguments: data);
   }
 
+  void onDeviceTap(Device device){
+    ServiceMessage message = RemoteServerMessageBuilder.postDeviceStateMessage(device, device.isOn );
+    ServicesProvider.instance.sendMessage(message);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -97,6 +104,7 @@ class _NormalPreviewView extends StatelessWidget {
                 itemCount: displayedDevicesCount,
                 itemBuilder: (context, index) {
                   return DevicePreviewCard(
+                    onTap: onDeviceTap,
                     device: getDevice(index),
                     onLongPress: onDeviceLongPress,
                     index: index,

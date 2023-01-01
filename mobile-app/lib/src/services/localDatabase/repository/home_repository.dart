@@ -60,3 +60,6 @@ Room resultSetToRoom(Row roomRow,ResultSet devicesResultSet) {
 
   return room;
 }
+
+
+

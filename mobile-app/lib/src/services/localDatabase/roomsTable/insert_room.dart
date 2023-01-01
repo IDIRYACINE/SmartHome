@@ -23,7 +23,6 @@ class InsertRoom extends TaskDelegate<void, InsertRoomData> {
         status: OperationStatus.success,
       );
     } catch (e) {
-      print(e);
       response = ServiceResponse(
         data: null,
         messageId: _messageData.messageId,

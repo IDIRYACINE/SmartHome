@@ -20,7 +20,7 @@ class PostDeviceState extends TaskDelegate<void, DeviceData> {
       final buffer = ByteData(12);
       buffer.setInt32(0, _messageData.data!.deviceId);
       buffer.setInt32(4, _messageData.data!.deviceType);
-      buffer.setInt32(8, _messageData.data!.turnedOn ? 1 : 0);
+      buffer.setInt32(8, _messageData.data!.turnedOn );
 
       final payload = buffer.buffer.asUint8List();
 
