@@ -23,6 +23,7 @@ class InsertRoom extends TaskDelegate<void, InsertRoomData> {
         status: OperationStatus.success,
       );
     } catch (e) {
+      print(e);
       response = ServiceResponse(
         data: null,
         messageId: _messageData.messageId,
@@ -43,7 +44,7 @@ class InsertRoom extends TaskDelegate<void, InsertRoomData> {
 
     final stmt = _db.prepare('''
       INSERT INTO ${app.DatabaseTables.rooms.name}
-      (${RoomsTableAttributes.homeId.name}, ${RoomsTableAttributes.roomId.name},${RoomsTableAttributes.roomName})
+      (${RoomsTableAttributes.homeId.name}, ${RoomsTableAttributes.roomId.name},${RoomsTableAttributes.roomName.name})
       VALUES (?, ?,?)
       ''');
 

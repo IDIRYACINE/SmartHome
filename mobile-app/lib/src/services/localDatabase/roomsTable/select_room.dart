@@ -43,7 +43,7 @@ class SelectRoom extends TaskDelegate<List<Room>, SelecRoomData> {
   }
   
   List<Room> _selectRooms() {
-    // final room = _messageData.data as SelecRoomData;
+    final room = _messageData.data as SelecRoomData;
 
     final stmt = _db.prepare(
       '''
@@ -52,7 +52,8 @@ class SelectRoom extends TaskDelegate<List<Room>, SelecRoomData> {
       ''');
 
       
-    // ResultSet resultSet = stmt.select([room.homeId]);
+    ResultSet resultSet = stmt.select([room.homeId]);
+    
     stmt.dispose();
     return [];
   }

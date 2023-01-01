@@ -49,5 +49,6 @@ enum DatabaseActions{
   deleteDevice,
   selectHome,
   selectRoom,
+  loadAllRooms,
   selectDevice,
 }

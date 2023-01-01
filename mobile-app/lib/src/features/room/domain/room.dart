@@ -4,6 +4,7 @@ class Room {
   String name;
   int id;
   String? description;
+  int homeId;
 
   final List<Device> devices;
 
@@ -11,6 +12,7 @@ class Room {
     required this.name,
     required this.id,
     this.description,
+    required this.homeId,
     this.devices = const [],
   });
 
@@ -19,10 +21,12 @@ class Room {
     int? id,
     String? description,
     List<Device>? devices,
+    int? homeId,
   }) {
     return Room(
       name: name ?? this.name,
       id: id ?? this.id,
+      homeId: homeId ?? this.homeId,
       description: description ?? this.description,
       devices: devices ?? this.devices,
     );

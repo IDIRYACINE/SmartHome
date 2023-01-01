@@ -66,13 +66,13 @@ class DeleteRoomMessage extends ServiceMessage {
   }
 }
 
-class LoadAllRoomsMessage extends ServiceMessage {
+class SelectAllRoomsMessage extends ServiceMessage {
   final _serviceId = AppServices.localDatabase.index;
   final _taskId = DatabaseActions.selectRoom.index;
 
   late SelecRoomData _data;
 
-  LoadAllRoomsMessage(
+  SelectAllRoomsMessage(
       {required int homeId, required TypedCallback<List<Room>> callback})
       : super(
           callback: callback,
@@ -84,6 +84,23 @@ class LoadAllRoomsMessage extends ServiceMessage {
   @override
   ServiceMessageData getDataObject(int messageId) {
     return ServiceMessageData<SelecRoomData>(_data,
+        messageId: messageId, serviceId: _serviceId, taskId: _taskId);
+  }
+}
+
+class LoadAllRoomsMessage extends ServiceMessage {
+  final _serviceId = AppServices.localDatabase.index;
+  final _taskId = DatabaseActions.loadAllRooms.index;
+
+  LoadAllRoomsMessage({required TypedCallback<List<Room>> callback})
+      : super(
+          callback: callback,
+          expectingCallback: true,
+        );
+
+  @override
+  ServiceMessageData getDataObject(int messageId) {
+    return ServiceMessageData<void>(null,
         messageId: messageId, serviceId: _serviceId, taskId: _taskId);
   }
 }

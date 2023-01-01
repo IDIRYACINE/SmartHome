@@ -51,6 +51,12 @@ class NotifyHomeSelected extends RoomEvents {
   NotifyHomeSelected(this.homeId);
 }
 
+class LoadRoomGroups extends RoomEvents {
+  final List<RoomGroup> roomGroups;
+
+  LoadRoomGroups(this.roomGroups);
+}
+
 class AddDevice extends RoomEvents {
   final DeviceType type;
   final int consumption;

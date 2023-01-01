@@ -28,6 +28,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     on<NotifyHomesLoaded>(_notifyHomesLoaded);
     on<NotifyHomeSelected>(_notifyHomeSelected);
     on<RemoveHomeGroup>(_notifyHomeRemoved);
+
+    on<LoadRoomGroups>(_loadRoomGroups);
   }
 
   void _addRoom(AddRoom event, Emitter<RoomState> emit) {
@@ -35,12 +37,12 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       final List<Room> updatedRooms = List.from(state.roomGroup!.rooms);
 
       int index = updatedRooms.length;
-      Room room = Room(id: index, name: event.roomName);
+      Room room = Room(
+          id: index, homeId: state.roomGroup!.homeId, name: event.roomName);
 
       updatedRooms.add(room);
 
-      final updatedGroupRoom =
-          state.roomGroup!.copyWith(rooms: updatedRooms);
+      final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
       final updatedHomeRooms = state.roomGroups
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -49,8 +51,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       _addRoomOnDatabase(room);
 
       emit(
-        state.copyWith(
-            roomGroups: updatedHomeRooms),
+        state.copyWith(roomGroups: updatedHomeRooms),
       );
     }
   }
@@ -65,8 +66,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
         }
       }).toList();
 
-      final updatedGroupRoom =
-          state.roomGroup!.copyWith(rooms: updatedRooms);
+      final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
       final updatedHomeRooms = state.roomGroups
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -75,20 +75,17 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       _updateRoomOnDatabase(event.room);
 
       emit(
-        state.copyWith(
-            roomGroups: updatedHomeRooms),
+        state.copyWith(roomGroups: updatedHomeRooms),
       );
     }
   }
 
   void _removeRoom(RemoveRoom event, Emitter<RoomState> emit) {
     if (state.roomGroup != null) {
-      final List<Room> updatedRooms = List.unmodifiable(state
-          .roomGroup!.rooms
-          .where((room) => room.id != event.room.id));
+      final List<Room> updatedRooms = List.unmodifiable(
+          state.roomGroup!.rooms.where((room) => room.id != event.room.id));
 
-      final updatedGroupRoom =
-          state.roomGroup!.copyWith(rooms: updatedRooms);
+      final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
       final updatedHomeRooms = state.roomGroups
           .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -98,7 +95,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
 
       emit(
         state.copyWith(
-            roomGroups: updatedHomeRooms,),
+          roomGroups: updatedHomeRooms,
+        ),
       );
     }
   }
@@ -108,10 +106,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     RoomGroup group = RoomGroup(homeId: event.homeId, rooms: []);
     updatedHomeRooms.add(group);
 
-
     emit(state.copyWith(
       roomGroups: updatedHomeRooms,
-      
     ));
   }
 
@@ -147,8 +143,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       }
     }));
 
-    final updatedGroupRoom =
-        state.roomGroup!.copyWith(rooms: updatedRooms);
+    final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
     final updateGroupRooms = state.roomGroups
         .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -159,7 +154,8 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     ));
 
     emit(state.copyWith(
-        roomGroups: updateGroupRooms, ));
+      roomGroups: updateGroupRooms,
+    ));
   }
 
   FutureOr<void> _updateDevice(UpdateDevice event, Emitter<RoomState> emit) {
@@ -179,8 +175,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       }
     }));
 
-    final updatedGroupRoom =
-        state.roomGroup!.copyWith(rooms: updatedRooms);
+    final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
     final updateGroupRooms = state.roomGroups
         .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -188,8 +183,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
 
     devicesBloc.add(devices.UpdateDevice(device: event.device));
 
-    emit(state.copyWith(
-        roomGroups: updateGroupRooms));
+    emit(state.copyWith(roomGroups: updateGroupRooms));
   }
 
   FutureOr<void> _removeDevice(RemoveDevice event, Emitter<RoomState> emit) {
@@ -209,8 +203,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       }
     }));
 
-    final updatedGroupRoom =
-        state.roomGroup!.copyWith(rooms: updatedRooms);
+    final updatedGroupRoom = state.roomGroup!.copyWith(rooms: updatedRooms);
 
     final updateGroupRooms = state.roomGroups
         .map((e) => e.homeId == state.currentHomeId ? updatedGroupRoom : e)
@@ -222,8 +215,7 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
       ),
     );
 
-    emit(state.copyWith(
-        roomGroups: updateGroupRooms));
+    emit(state.copyWith(roomGroups: updateGroupRooms));
   }
 
   void _addRoomOnDatabase(Room room) {
@@ -244,8 +236,9 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     ServicesProvider.instance.sendMessage(message);
   }
 
-  FutureOr<void> _notifyHomesLoaded(NotifyHomesLoaded event, Emitter<RoomState> emit) {
-    final List<RoomGroup> updatedHomeRooms =[];
+  FutureOr<void> _notifyHomesLoaded(
+      NotifyHomesLoaded event, Emitter<RoomState> emit) {
+    final List<RoomGroup> updatedHomeRooms = [];
 
     for (var home in event.homes) {
       RoomGroup group = RoomGroup(homeId: home.id, rooms: []);
@@ -255,12 +248,20 @@ class RoomBloc extends Bloc<RoomEvents, RoomState> {
     emit(state.copyWith(
       roomGroups: updatedHomeRooms,
     ));
-
   }
 
   FutureOr<void> _notifyHomeSelected(event, Emitter<RoomState> emit) {
     emit(state.copyWith(
       currentHomeId: event.homeId,
+    ));
+  }
+
+  FutureOr<void> _loadRoomGroups(
+      LoadRoomGroups event, Emitter<RoomState> emit) {
+    devicesBloc.add(devices.LoadDevices(event.roomGroups));
+
+    emit(state.copyWith(
+      roomGroups: event.roomGroups,
     ));
   }
 }

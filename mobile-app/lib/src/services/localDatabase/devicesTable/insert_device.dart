@@ -49,7 +49,7 @@ class InsertDevice extends TaskDelegate<void, InsertDeviceData> {
         ${DevicesTableAttributes.deviceType.name},
         ${DevicesTableAttributes.deviceSubtype.name},
         ${DevicesTableAttributes.deviceConsumption.name},
-        ${DevicesTableAttributes.deviceName.name},
+        ${DevicesTableAttributes.deviceName.name}
       )
       VALUES (?, ?, ?, ?, ?, ?, ?)
       ''');

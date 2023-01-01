@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:smarthome_algeria/src/services/localDatabase/roomsTable/load_all_rooms.dart';
 import 'package:smarthome_algeria/src/services/localDatabase/types.dart' as app;
 import 'package:smarthome_algeria/src/services/servicesProvider/types.dart';
 
@@ -56,7 +57,6 @@ class SqliteDatabase implements app.Database {
   @override
   Future<ServiceResponse> handleMessage(ServiceMessageData message) async {
     ServiceResponse response;
-    print("got message ${message.taskId}");
 
     if (!isConnected) {
       await connect();
@@ -125,6 +125,7 @@ class SqliteDatabase implements app.Database {
       ..add(DeleteDevice(_db))
       ..add(SelectAllHomes(_db))
       ..add(SelectRoom(_db))
+      ..add(LoadAllRooms(_db))
       ..add(SelectDevice(_db));
   }
 

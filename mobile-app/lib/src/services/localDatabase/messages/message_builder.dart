@@ -15,7 +15,8 @@ abstract class DatabaseMessageBuilder {
     return UpdateHomeMessage(home: home, callback: callback);
   }
 
-  static DeleteHomeMessage deleteHomeMessage(int homeId, VoidCallback callback) {
+  static DeleteHomeMessage deleteHomeMessage(
+      int homeId, VoidCallback callback) {
     return DeleteHomeMessage(homeId: homeId, callback: callback);
   }
 
@@ -39,10 +40,17 @@ abstract class DatabaseMessageBuilder {
     return DeleteRoomMessage(room: room, callback: callback, homeId: homeId);
   }
 
-  static LoadAllRoomsMessage loadAllRooms(
+  static SelectAllRoomsMessage selectAllRoomsMessage(
       int homeId, TypedCallback<List<Room>> callback) {
-    return LoadAllRoomsMessage(
+    return SelectAllRoomsMessage(
       homeId: homeId,
+      callback: callback,
+    );
+  }
+
+  static LoadAllRoomsMessage loadAllRoomsMessage(
+      TypedCallback<List<Room>> callback) {
+    return LoadAllRoomsMessage(
       callback: callback,
     );
   }

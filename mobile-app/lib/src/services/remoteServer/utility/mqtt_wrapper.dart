@@ -55,7 +55,7 @@ class MQTTClientWrapper {
   }
 
   void _subscribeToTopic(String topicName) {
-    client.subscribe(topicName, MqttQos.atMostOnce);
+    client.subscribe(_devicesResponsesTopic, MqttQos.atMostOnce);
 
     // print the message when it is received
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
