@@ -1,0 +1,12 @@
+
+
+
+
+#define ARDUINO_LED_PIN 3
+
+#define ARDUINO_ON_LED_POWER 200
+
+#define ARDUINO_OFF_LED_POWER 0
+
+#define MAX_WIFI_RETRIES 5
+
