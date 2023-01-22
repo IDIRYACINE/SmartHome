@@ -6,5 +6,4 @@ struct DeviceCommand
     bool turnOn;
 };
 
-typedef unsigned int size_t;
 typedef void (*CommandHandler)(DeviceCommand*); 

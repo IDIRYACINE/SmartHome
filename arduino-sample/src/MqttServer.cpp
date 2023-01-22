@@ -29,7 +29,7 @@ boolean connectToMqttBroker()
     return true;
 }
 
-void connectToWifi(int *maxRetries)
+static void connectToWifi(int *maxRetries)
 {
 
     if (WiFi.status() == WL_CONNECTED)
@@ -58,12 +58,12 @@ void connectToWifi(int *maxRetries)
     }
 }
 
-void isConnectedToWifi(boolean *isConnected)
+static void isConnectedToWifi(boolean *isConnected)
 {
     *isConnected = WiFi.status() == WL_CONNECTED;
 }
 
-void onMessageReceived(int messageSize)
+static void onMessageReceived(int messageSize)
 {
     Serial.println("Received a message with topic '");
 
@@ -75,12 +75,15 @@ void onMessageReceived(int messageSize)
 
     Serial.println(" bytes:");
 
-    while (mqttClient.available())
-    {
-        Serial.print((char)mqttClient.read());
-    }
+    uint8_t buffer;
+    
+    mqttClient.readBytes(&buffer,messageSize);
 
-    Serial.println();
+    DeviceCommand command;
+
+    memcpy(&command , &buffer ,messageSize);
+
+    commandsRegister.registerCommand(&command);
 
     Serial.println();
 }

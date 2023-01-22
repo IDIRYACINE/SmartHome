@@ -5,7 +5,7 @@
 #include <Types.h>
 
 
-CommandsRegister commandsRegister;
+extern CommandsRegister commandsRegister;
 int max_handeled_commands_per_loop;
 
 void setupOutputPins(){
