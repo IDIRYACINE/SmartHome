@@ -16,28 +16,22 @@ class MQTTClientWrapper {
   MqttSubscriptionState subscriptionState = MqttSubscriptionState.IDLE;
 
   // using async tasks, so the connection won't hinder the code flow
-  void prepareMqttClient() async {
+  Future<MqttCurrentConnectionState> prepareMqttClient() async {
     _setupMqttClient();
-    await _connectClient();
+    return connectClient();
   }
 
   // waiting for the connection, if an error occurs, print it and disconnect
-  Future<void> _connectClient() async {
+  Future<MqttCurrentConnectionState> connectClient() async {
     try {
       connectionState = MqttCurrentConnectionState.CONNECTING;
       await client.connect('idiryacine', 'idiryacine34');
+      connectionState = MqttCurrentConnectionState.CONNECTED;
     } on Exception {
       connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
       client.disconnect();
     }
-
-    // when connected, print a confirmation, else print an error
-    if (client.connectionStatus!.state == MqttConnectionState.connected) {
-      connectionState = MqttCurrentConnectionState.CONNECTED;
-    } else {
-      connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
-      client.disconnect();
-    }
+    return connectionState;
   }
 
   void _setupMqttClient() {
@@ -45,7 +39,6 @@ class MQTTClientWrapper {
         '0cd5c4fc8a9d45468efdcc59f176a76d.s2.eu.hivemq.cloud',
         'idiryacine',
         8883);
-    // the next 2 lines are necessary to connect with tls, which is used by HiveMQ Cloud
     client.secure = true;
     client.securityContext = SecurityContext.defaultContext;
     client.keepAlivePeriod = 20;
@@ -60,7 +53,6 @@ class MQTTClientWrapper {
     // print the message when it is received
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       // final MqttMessage recMess = c[0].payload;
-
     });
   }
 

@@ -21,6 +21,7 @@ void dummyCommandHandler(DeviceCommand* command){
 
 void setup()
 {
+  serial.begin(9600);
   setupOutputPins();
   connectToMqttBroker();
   max_handeled_commands_per_loop = MAX_HANDLED_COMMANDS_PER_LOOP;
